@@ -149,10 +149,8 @@ Key dependencies include:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- Flutter team for the amazing framework
-- Material Design team for the design system
 - Open source community for various packages
 - Farmers and agricultural experts for their valuable feedback
 
