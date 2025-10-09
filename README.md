@@ -47,6 +47,20 @@ FarmSphere is a comprehensive Flutter application designed to assist farmers wit
    flutter run
    ```
 
+### Web Deployment (GitHub Pages)
+
+This project includes a GitHub Actions workflow that builds the Flutter web app and deploys it to GitHub Pages on each push to `main`.
+
+Steps:
+1. Push to `main`.
+2. In GitHub → Settings → Pages → set Source to “GitHub Actions”.
+3. After the first workflow run, your site will be available at `https://<username>.github.io/<repo>/`.
+
+Notes:
+- We use the HTML renderer to avoid CanvasKit fetch issues.
+- Place `assets/model.tflite` locally only if needed; large files are ignored in git.
+- Nokia Verify often requires server-side auth; the web UI calls will need a proxy or operator token.
+
 ### Building for Production
 
 **Android APK:**
