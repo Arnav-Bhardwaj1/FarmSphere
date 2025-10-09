@@ -150,7 +150,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
       final random = DateTime.now().millisecondsSinceEpoch % mockDiseases.length;
       recognitions = [mockDiseases[random]];
 
-      if (recognitions != null && recognitions.isNotEmpty) {
+      if (recognitions.isNotEmpty) {
         setState(() {
           _results = recognitions;
           results = true;
