@@ -56,3 +56,9 @@ lib/secrets.dart
 **/secrets.dart
 **/api_keys.dart
 **/config/secrets.dart
+
+# Google Cloud Service Account credentials
+**/dialog_flow_auth.json
+**/service_account.json
+**/google_credentials.json
+**/*credentials*.json
