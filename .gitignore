@@ -62,3 +62,12 @@ lib/secrets.dart
 **/service_account.json
 **/google_credentials.json
 **/*credentials*.json
+
+# Large ML model files
+**/model.tflite
+**/*.tflite
+**/ml_model.tflite
+
+# Build cache files
+build/
+**/build/
