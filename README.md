@@ -106,7 +106,8 @@ lib/
 ## 🔧 Configuration
 
 ### API Keys
-For production deployment, you'll need to configure:
+**For production deployment, you'll need to configure:**
+- Network As a Code (Location Retrival API)
 - Weather API (OpenWeatherMap or similar)
 - Market data API
 - AI/ML service for crop health analysis
