@@ -3,13 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import '../secrets.dart';
 
 class LocationService {
   // Nokia Network as Code API configuration
   static const String _baseUrl = 'https://network-as-code.p.rapidapi.com';
-  static const String _rapidApiKey = '60749d29c4msh9d8ede71b91ba2ep11f0dfjsn0044285422af'; // Replace with your actual API key
-  static const String _appId = 'default-application_14596'; // Replace with your actual app ID
+  static const String _rapidApiKey = rapidApiKey;
   
   // Free reverse geocoding API (works better on web)
   static const String _reverseGeocodingUrl = 'https://api.bigdatacloud.net/data/reverse-geocode-client';
@@ -339,10 +338,8 @@ class LocationService {
   
   /// Validate Nokia API configuration
   static bool isNokiaAPIConfigured() {
-    return _rapidApiKey.isNotEmpty && 
-           _rapidApiKey != '60749d29c4msh9d8ede71b91ba2ep11f0dfjsn0044285422af' &&
-           _appId.isNotEmpty && 
-           _appId != 'default-application_14596';
+    return rapidApiKey.isNotEmpty && 
+           rapidApiKey != '60749d29c4msh9d8ede71b91ba2ep11f0dfjsn0044285422af';
   }
   
   /// Get location accuracy description
