@@ -17,21 +17,41 @@ chatbot_package/
 ├── lib/
 │   └── chatbot.dart          # Main chatbot widget implementation
 ├── assets/
-│   └── dialog_flow_auth.json # Google Dialogflow service account credentials
+│   ├── dialog_flow_auth.json.template # Template for Google Dialogflow credentials
+│   └── dialog_flow_auth.json # Google Dialogflow service account credentials (create from template)
 ├── pubspec.yaml              # Package dependencies
 └── README.md                 # This documentation
 ```
 
 ## Quick Start
 
-### 1. Copy Files to Your Project
+### 1. Setup Google Dialogflow Credentials
+
+Before using the chatbot, you need to set up Google Dialogflow credentials:
+
+1. **Copy the template file:**
+   ```bash
+   cp chatbot_package/assets/dialog_flow_auth.json.template chatbot_package/assets/dialog_flow_auth.json
+   ```
+
+2. **Get your Google Cloud Service Account credentials:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the Dialogflow API
+   - Create a Service Account
+   - Download the JSON credentials file
+   - Replace the placeholder values in `dialog_flow_auth.json` with your actual credentials
+
+3. **Important:** Never commit the actual `dialog_flow_auth.json` file to version control!
+
+### 2. Add to Your Flutter Project
 
 Copy the following files to your Flutter project:
 
 - `lib/chatbot.dart` → `your_project/lib/chatbot.dart`
 - `assets/dialog_flow_auth.json` → `your_project/assets/dialog_flow_auth.json`
 
-### 2. Update pubspec.yaml
+### 3. Update pubspec.yaml
 
 Add the required dependency to your `pubspec.yaml`:
 
@@ -46,7 +66,7 @@ flutter:
     - assets/dialog_flow_auth.json  # Add this line
 ```
 
-### 3. Import and Use
+### 4. Import and Use
 
 ```dart
 import 'package:your_project/chatbot.dart';
