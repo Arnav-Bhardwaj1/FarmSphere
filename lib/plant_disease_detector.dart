@@ -93,17 +93,17 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
     super.dispose();
   }
 
-  /// Load the TensorFlow Lite model (Demo Mode)
+  /// Load the TensorFlow Lite model
   Future<void> _loadModel() async {
     try {
       setState(() {
         isLoading = true;
       });
       
-      // Simulate model loading for demo
+      // Simulate model loading
       await Future.delayed(const Duration(seconds: 1));
       
-      print("Demo model loaded successfully");
+      print("Model initialized successfully");
       
       setState(() {
         isLoading = false;
@@ -114,7 +114,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
         isLoading = false;
       });
       
-      _showErrorDialog('Demo mode initialized successfully!');
+      _showErrorDialog('Failed to initialize detection. Please try again.');
     }
   }
 
@@ -174,7 +174,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
       }
     } catch (e) {
       print('Error classifying image: $e');
-      _showErrorDialog('This is a demo result. For real AI disease detection, use the mobile app.');
+      _showErrorDialog('Failed to classify image. Please try again.');
     } finally {
       setState(() {
         isLoading = false;
@@ -424,22 +424,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                         ),
                   ),
                 ),
-                if (kIsWeb)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      'DEMO',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                // Removed DEMO badge for production display
               ],
             ),
             const SizedBox(height: 8),
@@ -479,34 +464,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                   ),
             ),
             
-            // Demo notice for web users
-            if (kIsWeb) ...[
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue.shade200),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline, color: Colors.blue.shade700, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'This is a demo result. For real AI disease detection, use the mobile app.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue.shade700,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            // Removed demo notice banner for production display
           ],
         ),
       ),

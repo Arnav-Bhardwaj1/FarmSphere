@@ -5,7 +5,9 @@ FarmSphere is a comprehensive Flutter application designed to assist farmers wit
 ## 🌱 Features
 
 ### Core Features
-- **AI Crop Health Scanner** - Upload leaf photos or describe symptoms for instant disease diagnosis
+- **Nokia Network as Code API** - For Location Retrieval
+- **ML Crop Health Scanner** - Upload leaf photos or describe symptoms for instant disease diagnosis
+- **AI Chatbot** - For advices, insights and discussions with an AI chatbot for disease prevention & handling, with farming tips and suggestions for an optimal yield.
 - **Weather & Alerts** - Real-time weather updates and agricultural alerts
 - **Market Prices & Schemes** - Access to current crop prices and government schemes
 - **Voice & Local Language Support** - Multilingual support for better accessibility
@@ -18,7 +20,6 @@ FarmSphere is a comprehensive Flutter application designed to assist farmers wit
 - Image capture and gallery integration
 - Local data persistence with SQLite
 - Responsive design for various screen sizes
-- Offline-first approach with data synchronization
 
 ## 🚀 Getting Started
 
@@ -62,7 +63,8 @@ flutter build appbundle --release
 
 The app includes the following main screens:
 - **Home Dashboard** - Overview of all features and quick actions
-- **Crop Health Scanner** - AI-powered disease diagnosis
+- **Crop Health Scanner** - ML-powered disease diagnosis
+- **AI Chatbot** - Gemini AI powered chatbot
 - **Weather Screen** - Current weather and 7-day forecast
 - **Market Screen** - Crop prices and government schemes
 - **Activities Screen** - Farm activity logging and analytics
@@ -153,10 +155,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Open source community for various packages
 - Farmers and agricultural experts for their valuable feedback
-
-## 📞 Support
-
-For support, email support@farmsphere.com or join our community forum.
 
 ---
 
