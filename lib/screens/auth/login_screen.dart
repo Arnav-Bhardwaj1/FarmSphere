@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../main_navigation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/location_service.dart';
+import '../../services/nokia_number_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -20,6 +22,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _locationController = TextEditingController();
   bool _isLoading = false;
   bool _isDetectingLocation = false;
+  bool _isVerifyingNumber = false;
 
   @override
   void dispose() {
@@ -28,6 +31,60 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _phoneController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _verifyPhoneNumber() async {
+    final raw = _phoneController.text.trim();
+    if (raw.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter phone number to verify')),
+      );
+      return;
+    }
+
+    // Ensure E.164 format when possible; prepend '+' if missing
+    final phone = raw.startsWith('+') ? raw : '+$raw';
+
+    // Nokia sandbox accepts only test device IDs: +999999201000..+999999201005
+    final isSandboxAccepted = phone.startsWith('+99999920100');
+    if (!isSandboxAccepted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sandbox accepts only +999999201000..+999999201005'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      // Continue anyway so user can see the exact API response, but warn first.
+    }
+
+    setState(() => _isVerifyingNumber = true);
+    try {
+      final res = await NokiaNumberService.phoneNumberVerify(
+        phoneNumber: phone,
+        authorizationToken: '', // TODO: supply bearer token after operator consent
+      );
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Verification request sent for $phone'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print('Number verify response: $res');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Number verification failed: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isVerifyingNumber = false);
+    }
   }
 
   Future<void> _detectLocation() async {
@@ -305,6 +362,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                 ),
                 
+                const SizedBox(height: 24),
+
+                // Verify phone number via Nokia API
+                OutlinedButton.icon(
+                  onPressed: _isVerifyingNumber ? null : _verifyPhoneNumber,
+                  icon: _isVerifyingNumber
+                      ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.verified_user),
+                  label: const Text('Verify phone number'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                ),
+
                 const SizedBox(height: 24),
                 
                 // Features Preview

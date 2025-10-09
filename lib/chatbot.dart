@@ -67,7 +67,7 @@ class _AIChatbotState extends State<AIChatbot> {
       // Initialize the Gemini model with your API key
       model = GenerativeModel(
         model: 'gemini-2.5-flash',
-        apiKey: 'AIzaSyBhA760E90lMwVgHqEh8s2UY0lL74bI0BU',
+        apiKey: 'AIzaSyA3j5nTA3w1zg81rhfTWfkvFfaLo327HZs',
         generationConfig: GenerationConfig(
           temperature: 0.7,
           topK: 40,
