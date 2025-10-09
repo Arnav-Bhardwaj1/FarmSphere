@@ -15,53 +15,103 @@ class ForecastCard extends StatelessWidget {
     final high = forecast['high'];
     final low = forecast['low'];
     final condition = forecast['condition'];
+    final humidity = forecast['humidity'];
+    final precipitation = forecast['precipitation'];
 
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
+      child: Container(
+        width: 90,
+        height: 110,
+        padding: const EdgeInsets.all(6),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               dayName,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w600,
+                fontSize: 10,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               '${date.day}/${date.month}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.grey[600],
+                fontSize: 9,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             Icon(
               _getWeatherIcon(condition),
-              size: 24,
+              size: 18,
               color: Theme.of(context).colorScheme.primary,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 3),
             Text(
               condition ?? 'Unknown',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 10,
+                fontSize: 8,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               '${high}°/${low}°',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w600,
+                fontSize: 9,
               ),
             ),
+            if (humidity != null) ...[
+              const SizedBox(height: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.water_drop,
+                    size: 8,
+                    color: Colors.grey[600],
+                  ),
+                  const SizedBox(width: 1),
+                  Text(
+                    '${humidity}%',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 7,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            if (precipitation != null && precipitation > 0) ...[
+              const SizedBox(height: 1),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.grain,
+                    size: 8,
+                    color: Colors.blue[600],
+                  ),
+                  const SizedBox(width: 1),
+                  Text(
+                    '${(precipitation * 100).toInt()}%',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontSize: 7,
+                      color: Colors.blue[600],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

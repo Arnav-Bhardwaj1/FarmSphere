@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SchemeCard extends StatelessWidget {
   final Map<String, dynamic> scheme;
@@ -179,6 +180,48 @@ class SchemeCard extends StatelessWidget {
                 Text(scheme['eligibility']),
                 const SizedBox(height: 12),
               ],
+              if (scheme['benefit'] != null) ...[
+                Text(
+                  'Benefits',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(scheme['benefit']),
+                const SizedBox(height: 12),
+              ],
+              if (scheme['applicationProcess'] != null) ...[
+                Text(
+                  'How to Apply',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(scheme['applicationProcess']),
+                const SizedBox(height: 12),
+              ],
+              if (scheme['website'] != null) ...[
+                Text(
+                  'Official Website',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                InkWell(
+                  onTap: () => _launchURL(scheme['website']),
+                  child: Text(
+                    scheme['website'],
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
               if (scheme['status'] != null) ...[
                 Text(
                   'Status',
@@ -197,22 +240,28 @@ class SchemeCard extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Close'),
           ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Implement apply functionality
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Apply functionality coming soon'),
-                  backgroundColor: Colors.orange,
-                ),
-              );
-            },
-            child: const Text('Apply'),
-          ),
+          if (scheme['website'] != null)
+            ElevatedButton.icon(
+              onPressed: () => _launchURL(scheme['website']),
+              icon: const Icon(Icons.open_in_new),
+              label: const Text('Visit Website'),
+            ),
         ],
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    try {
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
   }
 }
 

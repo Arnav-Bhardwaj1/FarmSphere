@@ -7,6 +7,7 @@ import 'market/market_screen.dart';
 import 'activities/activities_screen.dart';
 import 'community/community_screen.dart';
 import 'profile/profile_screen.dart';
+import '../chatbot.dart';
 
 class MainNavigation extends ConsumerStatefulWidget {
   const MainNavigation({super.key});
@@ -108,6 +109,26 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
           }).toList(),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AIChatbot(
+                title: 'FarmSphere AI Assistant',
+                backgroundColor: Color(0xFFF8F9FA),
+                appBarColor: Color(0xFF36946F),
+                inputContainerColor: Color(0xFF2D3648),
+                sendButtonColor: Color(0xFF36946F),
+                hintText: 'Ask me about farming...',
+              ),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF36946F),
+        child: const Icon(Icons.chat, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

@@ -18,7 +18,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadMarketData();
     });
@@ -50,7 +50,8 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
-            Tab(text: 'Prices', icon: Icon(Icons.trending_up)),
+            Tab(text: 'MSP', icon: Icon(Icons.account_balance)),
+            Tab(text: 'Market', icon: Icon(Icons.trending_up)),
             Tab(text: 'Schemes', icon: Icon(Icons.card_giftcard)),
           ],
         ),
@@ -58,14 +59,144 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _buildPricesTab(marketState),
+          _buildMSPTab(marketState),
+          _buildMarketTab(marketState),
           _buildSchemesTab(marketState),
         ],
       ),
     );
   }
 
-  Widget _buildPricesTab(MarketPricesState marketState) {
+  Widget _buildMSPTab(MarketPricesState marketState) {
+    return RefreshIndicator(
+      onRefresh: _loadMarketData,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // MSP Overview
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.account_balance,
+                          color: Colors.green,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Minimum Support Price (MSP)',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Government guaranteed minimum prices for agricultural commodities. These prices are announced before each sowing season to help farmers make informed decisions.',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // MSP Prices List
+            if (marketState.isLoading)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else if (marketState.error != null)
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.red[400],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Failed to load MSP data',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        marketState.error!,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: _loadMarketData,
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else if (marketState.prices != null && marketState.prices!.isNotEmpty) ...[
+              Text(
+                'Current MSP Rates (2024-25)',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              ...marketState.prices!.where((price) => price['mspPrice'] != null).map((price) => 
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: PriceCard(price: price),
+                ),
+              ),
+            ] else
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.account_balance,
+                        size: 48,
+                        color: Colors.grey[400],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'No MSP data available',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMarketTab(MarketPricesState marketState) {
     return RefreshIndicator(
       onRefresh: _loadMarketData,
       child: SingleChildScrollView(
@@ -84,12 +215,12 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                     Row(
                       children: [
                         Icon(
-                          Icons.analytics,
+                          Icons.trending_up,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Market Overview',
+                          'Market Prices',
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -98,7 +229,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Stay updated with real-time crop prices from major mandis across the country. Prices are updated every hour.',
+                      'Real-time crop prices from major mandis across India. Prices are updated regularly and reflect current market conditions.',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -110,7 +241,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
             
             const SizedBox(height: 16),
             
-            // Prices List
+            // Market Prices List
             if (marketState.isLoading)
               const Center(
                 child: Padding(
@@ -154,13 +285,13 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
               )
             else if (marketState.prices != null && marketState.prices!.isNotEmpty) ...[
               Text(
-                'Current Prices',
+                'Current Market Prices',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 12),
-              ...marketState.prices!.map((price) => 
+              ...marketState.prices!.where((price) => price['market'] != null).map((price) => 
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: PriceCard(price: price),
@@ -179,7 +310,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No price data available',
+                        'No market data available',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey[600],
                         ),

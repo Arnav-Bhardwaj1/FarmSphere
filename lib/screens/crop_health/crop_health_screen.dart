@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/diagnosis_result_card.dart';
 import '../../widgets/loading_overlay.dart';
+import '../../plant_disease_detector.dart';
 
 class CropHealthScreen extends ConsumerStatefulWidget {
   const CropHealthScreen({super.key});
@@ -183,10 +185,25 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.cover,
-                      ),
+                      child: kIsWeb 
+                          ? Image.network(
+                              _selectedImage!.path,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: const Icon(
+                                    Icons.image_not_supported,
+                                    size: 50,
+                                    color: Colors.grey,
+                                  ),
+                                );
+                              },
+                            )
+                          : Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -289,6 +306,35 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 ),
                 
                 const SizedBox(height: 24),
+                
+                // ML Disease Detection Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PlantDiseaseDetector(
+                            title: 'AI Plant Disease Scanner',
+                            backgroundColor: Color(0xFFF8F9FA),
+                            appBarColor: Color(0xFF36946F),
+                            fabColor: Color(0xFF2D3648),
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.smart_toy),
+                    label: const Text('AI Disease Detection'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      backgroundColor: const Color(0xFF36946F),
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
                 
                 // Analyze Button
                 SizedBox(

@@ -115,7 +115,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                       final forecast = weatherState.forecast![index];
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: index < weatherState.forecast!.length - 1 ? 12 : 0,
+                          right: index < weatherState.forecast!.length - 1 ? 8 : 0,
                         ),
                         child: ForecastCard(forecast: forecast),
                       );

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../main_navigation.dart';
+import 'package:permission_handler/permission_handler.dart';
+import '../../services/location_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +19,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
   bool _isLoading = false;
+  bool _isDetectingLocation = false;
 
   @override
   void dispose() {
@@ -25,6 +28,76 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _phoneController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _detectLocation() async {
+    setState(() {
+      _isDetectingLocation = true;
+    });
+
+    try {
+      // Request location permission
+      final permission = await Permission.location.request();
+      
+      if (permission.isGranted) {
+        // Get current location using Nokia Location Service
+        // For testing, try simple GPS first, then Nokia API
+        Map<String, dynamic> locationData;
+        try {
+          locationData = await LocationService.getSimpleLocation();
+        } catch (e) {
+          // If simple GPS fails, try Nokia API
+          locationData = await LocationService.detectLocationWithNokia();
+        }
+        
+        if (mounted) {
+          _locationController.text = locationData['location'] ?? 'Unknown Location';
+          
+          // Show enhanced success message with accuracy info
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Location detected: ${locationData['location']}'),
+                  if (locationData['accuracy'] == 'Nokia Network as Code')
+                    Text(
+                      '✓ Enhanced accuracy via Nokia Network as Code',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.green[100],
+                      ),
+                    ),
+                ],
+              ),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 4),
+            ),
+          );
+        } else {
+          throw Exception('Unable to detect location');
+        }
+      } else {
+        throw Exception('Location permission denied');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location detection failed: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isDetectingLocation = false;
+        });
+      }
+    }
   }
 
   Future<void> _handleLogin() async {
@@ -172,18 +245,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 
                 const SizedBox(height: 16),
                 
-                TextFormField(
-                  controller: _locationController,
-                  decoration: const InputDecoration(
-                    labelText: 'Location (City, State)',
-                    prefixIcon: Icon(Icons.location_on),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your location';
-                    }
-                    return null;
-                  },
+                // Location Field with Auto-detect Button
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _locationController,
+                        decoration: const InputDecoration(
+                          labelText: 'Location (City, State)',
+                          prefixIcon: Icon(Icons.location_on),
+                          hintText: 'Enter location or use Nokia API detection',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your location';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton.icon(
+                      onPressed: _isDetectingLocation ? null : _detectLocation,
+                      icon: _isDetectingLocation
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.my_location),
+                      label: const Text('Detect'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      ),
+                    ),
+                  ],
                 ),
                 
                 const SizedBox(height: 32),
@@ -215,9 +311,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.grey[50],
+                    color: Theme.of(context).brightness == Brightness.dark 
+                        ? Colors.grey[800] 
+                        : Colors.grey[50],
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey[200]!),
+                    border: Border.all(
+                      color: Theme.of(context).brightness == Brightness.dark 
+                          ? Colors.grey[600]! 
+                          : Colors.grey[200]!,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,30 +328,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         'What you\'ll get:',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
+                          color: Theme.of(context).brightness == Brightness.dark 
+                              ? Colors.white 
+                              : Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.camera_alt,
                         text: 'AI Crop Health Scanner',
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.wb_sunny,
                         text: 'Weather & Alerts',
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.trending_up,
                         text: 'Market Prices & Schemes',
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.record_voice_over,
                         text: 'Voice & Local Language Support',
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.analytics,
                         text: 'Activity Logging & Analytics',
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.people,
                         text: 'Farmer Community Platform',
                       ),
@@ -289,7 +394,11 @@ class _FeatureItem extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.white70 
+                    : Colors.black87,
+              ),
             ),
           ),
         ],

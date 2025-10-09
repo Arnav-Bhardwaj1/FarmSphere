@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/weather_service.dart';
+import '../services/msp_service.dart';
 
 // App State Providers
 final appStateProvider = StateNotifierProvider<AppStateNotifier, AppState>((ref) {
@@ -293,43 +295,15 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      // Mock weather data - in real app, call weather API
-      await Future.delayed(const Duration(seconds: 2));
-      
-      final mockWeather = {
-        'temperature': 28,
-        'humidity': 65,
-        'condition': 'Partly Cloudy',
-        'windSpeed': 12,
-        'location': location,
-      };
-      
-      final mockForecast = List.generate(7, (index) => {
-        'date': DateTime.now().add(Duration(days: index)).toIso8601String(),
-        'high': 30 + (index % 3),
-        'low': 20 + (index % 2),
-        'condition': ['Sunny', 'Cloudy', 'Rainy'][index % 3],
-      });
-      
-      final mockAlerts = [
-        {
-          'type': 'Rain Alert',
-          'message': 'Heavy rainfall expected in next 24 hours',
-          'severity': 'High',
-          'time': DateTime.now().add(const Duration(hours: 6)).toIso8601String(),
-        },
-        {
-          'type': 'Pest Alert',
-          'message': 'Increased pest activity detected in your area',
-          'severity': 'Medium',
-          'time': DateTime.now().add(const Duration(hours: 12)).toIso8601String(),
-        },
-      ];
+      // Fetch real weather data using WeatherService
+      final currentWeather = await WeatherService.getCurrentWeather(location);
+      final forecast = await WeatherService.getWeatherForecast(location);
+      final alerts = await WeatherService.getWeatherAlerts(location);
       
       state = state.copyWith(
-        currentWeather: mockWeather,
-        forecast: mockForecast,
-        alerts: mockAlerts,
+        currentWeather: currentWeather,
+        forecast: forecast,
+        alerts: alerts,
         isLoading: false,
       );
     } catch (e) {
@@ -337,6 +311,14 @@ class WeatherNotifier extends StateNotifier<WeatherState> {
         isLoading: false,
         error: e.toString(),
       );
+    }
+  }
+
+  Future<Map<String, dynamic>?> getCurrentLocation() async {
+    try {
+      return await WeatherService.getCurrentLocation();
+    } catch (e) {
+      return null;
     }
   }
 }
@@ -348,34 +330,17 @@ class MarketPricesNotifier extends StateNotifier<MarketPricesState> {
     state = state.copyWith(isLoading: true, error: null);
     
     try {
-      // Mock market data - in real app, call market API
-      await Future.delayed(const Duration(seconds: 2));
+      // Fetch real MSP and market data using MSPService
+      final mspPrices = await MSPService.getMSPPrices();
+      final marketPrices = await MSPService.getMarketPrices();
+      final schemes = await MSPService.getGovernmentSchemes();
       
-      final mockPrices = [
-        {'crop': 'Rice', 'price': 2500, 'unit': 'per quintal', 'market': 'Delhi Mandi'},
-        {'crop': 'Wheat', 'price': 2200, 'unit': 'per quintal', 'market': 'Punjab Mandi'},
-        {'crop': 'Tomato', 'price': 45, 'unit': 'per kg', 'market': 'Mumbai Mandi'},
-        {'crop': 'Potato', 'price': 25, 'unit': 'per kg', 'market': 'Kolkata Mandi'},
-      ];
-      
-      final mockSchemes = [
-        {
-          'title': 'PM-KISAN Scheme',
-          'description': 'Direct income support of ₹6000 per year',
-          'eligibility': 'Small and marginal farmers',
-          'status': 'Active',
-        },
-        {
-          'title': 'Soil Health Card Scheme',
-          'description': 'Free soil testing and recommendations',
-          'eligibility': 'All farmers',
-          'status': 'Active',
-        },
-      ];
+      // Combine MSP and market prices
+      final allPrices = [...mspPrices, ...marketPrices];
       
       state = state.copyWith(
-        prices: mockPrices,
-        schemes: mockSchemes,
+        prices: allPrices,
+        schemes: schemes,
         isLoading: false,
       );
     } catch (e) {
@@ -383,6 +348,38 @@ class MarketPricesNotifier extends StateNotifier<MarketPricesState> {
         isLoading: false,
         error: e.toString(),
       );
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMSPPrices() async {
+    try {
+      return await MSPService.getMSPPrices();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMarketPrices() async {
+    try {
+      return await MSPService.getMarketPrices();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGovernmentSchemes() async {
+    try {
+      return await MSPService.getGovernmentSchemes();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<Map<String, dynamic>?> getMSPForCrop(String cropName) async {
+    try {
+      return await MSPService.getMSPForCrop(cropName);
+    } catch (e) {
+      return null;
     }
   }
 }

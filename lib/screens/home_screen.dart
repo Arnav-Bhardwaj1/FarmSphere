@@ -5,6 +5,7 @@ import '../widgets/feature_card.dart';
 import '../widgets/quick_action_button.dart';
 import '../widgets/weather_card.dart';
 import '../widgets/alert_card.dart';
+import '../chatbot.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
 import 'market/market_screen.dart';
@@ -167,6 +168,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: QuickActionButton(
+                      icon: Icons.chat,
+                      label: 'AI Assistant',
+                      color: const Color(0xFF36946F),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const AIChatbot(
+                              title: 'FarmSphere AI Assistant',
+                              backgroundColor: Color(0xFFF8F9FA),
+                              appBarColor: Color(0xFF36946F),
+                              inputContainerColor: Color(0xFF2D3648),
+                              sendButtonColor: Color(0xFF36946F),
+                              hintText: 'Ask me about farming...',
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              
+              const SizedBox(height: 12),
+              
+              Row(
+                children: [
+                  Expanded(
+                    child: QuickActionButton(
                       icon: Icons.people,
                       label: 'Community',
                       color: Colors.purple,
@@ -174,6 +203,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const CommunityScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: QuickActionButton(
+                      icon: Icons.help_outline,
+                      label: 'Help',
+                      color: Colors.grey,
+                      onTap: () {
+                        // TODO: Implement help screen
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Help feature coming soon!'),
+                            backgroundColor: Colors.blue,
                           ),
                         );
                       },

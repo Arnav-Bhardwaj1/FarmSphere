@@ -53,10 +53,14 @@ dependencies:
   connectivity_plus: ^5.0.2
   
   # AI/ML (for mock implementations)
-  tflite_flutter: ^0.10.4
+  # tflite_flutter: ^0.10.4  # Not compatible with web
+  # tflite_v2: ^1.0.0        # Not compatible with web
   
   # Community Features
   socket_io_client: ^2.0.3+1
+  
+  # AI Chatbot
+  google_generative_ai: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -70,3 +74,5 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/animations/
+    - assets/model.tflite
+    - assets/classes.txt
