@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../lib/chatbot.dart';
+import 'package:ai_chatbot/chatbot.dart';
 
 /// Example app showing how to integrate the AI Chatbot
 class ChatbotExampleApp extends StatelessWidget {
-  const ChatbotExampleApp({Key? key}) : super(key: key);
+  const ChatbotExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ChatbotExampleApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

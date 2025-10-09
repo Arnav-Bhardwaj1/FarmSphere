@@ -34,7 +34,7 @@ class AIChatbot extends StatefulWidget {
   final TextStyle? hintStyle;
 
   const AIChatbot({
-    Key? key,
+    super.key,
     this.title = 'AI Assistant',
     this.backgroundColor = const Color(0xFFF9F3CC),
     this.appBarColor = const Color(0xFF285352),
@@ -43,7 +43,7 @@ class AIChatbot extends StatefulWidget {
     this.hintText = 'Ask to AI',
     this.titleStyle,
     this.hintStyle,
-  }) : super(key: key);
+  });
 
   @override
   _AIChatbotState createState() => _AIChatbotState();
@@ -167,7 +167,7 @@ class _AIChatbotState extends State<AIChatbot> {
       // You might want to show an error message to the user
       setState(() {
         addMessage(
-          Message(text: DialogText(text: ['Sorry, I encountered an error. Please try again.'])),
+          Message(text: DialogText(text: const ['Sorry, I encountered an error. Please try again.'])),
         );
       });
     }
@@ -188,10 +188,10 @@ class MessagesScreen extends StatefulWidget {
   final Color backgroundColor;
 
   const MessagesScreen({
-    Key? key,
+    super.key,
     required this.messages,
     this.backgroundColor = const Color(0xFFF9F3CC),
-  }) : super(key: key);
+  });
 
   @override
   _MessagesScreenState createState() => _MessagesScreenState();
@@ -265,7 +265,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
 /// );
 /// ```
 class ChatbotPage extends StatelessWidget {
-  const ChatbotPage({Key? key}) : super(key: key);
+  const ChatbotPage({super.key});
 
   @override
   Widget build(BuildContext context) {

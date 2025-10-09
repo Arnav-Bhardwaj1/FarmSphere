@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../lib/plant_disease_detector.dart';
+import 'package:plant_disease_detector/plant_disease_detector.dart';
 
 /// Example app showing how to integrate the Plant Disease Detection ML Model
 class PlantDiseaseExampleApp extends StatelessWidget {
-  const PlantDiseaseExampleApp({Key? key}) : super(key: key);
+  const PlantDiseaseExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class PlantDiseaseExampleApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -334,27 +334,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.camera_alt,
                         text: 'AI Crop Health Scanner',
                       ),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.wb_sunny,
                         text: 'Weather & Alerts',
                       ),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.trending_up,
                         text: 'Market Prices & Schemes',
                       ),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.record_voice_over,
                         text: 'Voice & Local Language Support',
                       ),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.analytics,
                         text: 'Activity Logging & Analytics',
                       ),
-                      _FeatureItem(
+                      const _FeatureItem(
                         icon: Icons.people,
                         text: 'Farmer Community Platform',
                       ),

@@ -320,7 +320,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

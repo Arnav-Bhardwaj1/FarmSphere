@@ -47,7 +47,7 @@ class PlantDiseaseDetector extends StatefulWidget {
   final Map<String, String>? customTreatments;
 
   const PlantDiseaseDetector({
-    Key? key,
+    super.key,
     this.title = 'Plant Disease Detection',
     this.backgroundColor = Colors.white,
     this.appBarColor = const Color(0xFF36946F),
@@ -59,7 +59,7 @@ class PlantDiseaseDetector extends StatefulWidget {
     this.confidenceThreshold = 0.3,
     this.showConfidence = true,
     this.customTreatments,
-  }) : super(key: key);
+  });
 
   @override
   _PlantDiseaseDetectorState createState() => _PlantDiseaseDetectorState();
@@ -125,7 +125,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
         isLoading = true;
       });
 
-      var recognitions;
+      List<Map<String, dynamic>> recognitions;
       
       // Demo mode - always show random results
       await Future.delayed(const Duration(seconds: 2)); // Simulate processing time
@@ -367,7 +367,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                   ..._results
                       .where((result) => result['confidence'] > widget.confidenceThreshold)
                       .map((result) => _buildResultCard(result))
-                      .toList(),
+                      ,
               ],
             ),
       floatingActionButton: Column(
@@ -524,7 +524,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
 /// );
 /// ```
 class PlantDiseaseDetectionPage extends StatelessWidget {
-  const PlantDiseaseDetectionPage({Key? key}) : super(key: key);
+  const PlantDiseaseDetectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {

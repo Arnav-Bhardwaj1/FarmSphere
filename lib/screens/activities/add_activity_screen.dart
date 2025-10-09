@@ -127,7 +127,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: _selectedType,
+                initialValue: _selectedType,
                 decoration: const InputDecoration(
                   hintText: 'Select activity type',
                   border: OutlineInputBorder(),
@@ -162,7 +162,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
-                value: _selectedCrop,
+                initialValue: _selectedCrop,
                 decoration: const InputDecoration(
                   hintText: 'Select crop',
                   border: OutlineInputBorder(),

@@ -19,15 +19,15 @@ class WeatherCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
-              const Color(0xFF0F172A), // Very dark blue-gray
-              const Color(0xFF1E293B), // Dark slate
-              const Color(0xFF334155), // Slate gray
+              Color(0xFF0F172A), // Very dark blue-gray
+              Color(0xFF1E293B), // Dark slate
+              Color(0xFF334155), // Slate gray
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            stops: const [0.0, 0.6, 1.0],
+            stops: [0.0, 0.6, 1.0],
           ),
           boxShadow: [
             BoxShadow(

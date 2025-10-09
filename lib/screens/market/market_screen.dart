@@ -85,7 +85,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.account_balance,
                           color: Colors.green,
                         ),

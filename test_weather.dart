@@ -9,7 +9,7 @@ void main() async {
   
   try {
     // Test with Delhi, India
-    final url = 'https://wttr.in/Delhi?format=j1';
+    const url = 'https://wttr.in/Delhi?format=j1';
     final response = await http.get(Uri.parse(url));
     
     if (response.statusCode == 200) {

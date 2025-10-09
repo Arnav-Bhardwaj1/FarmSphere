@@ -34,7 +34,7 @@ class AIChatbot extends StatefulWidget {
   final TextStyle? hintStyle;
 
   const AIChatbot({
-    Key? key,
+    super.key,
     this.title = 'AI Assistant',
     this.backgroundColor = const Color(0xFFF9F3CC),
     this.appBarColor = const Color(0xFF285352),
@@ -43,7 +43,7 @@ class AIChatbot extends StatefulWidget {
     this.hintText = 'Ask to AI',
     this.titleStyle,
     this.hintStyle,
-  }) : super(key: key);
+  });
 
   @override
   _AIChatbotState createState() => _AIChatbotState();

@@ -422,7 +422,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('$feature Coming Soon'),
-        content: Text('This feature is under development and will be available soon.'),
+        content: const Text('This feature is under development and will be available soon.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

@@ -64,7 +64,7 @@ class ForecastCard extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              '${high}°/${low}°',
+              '$high°/$low°',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.w600,
                 fontSize: 9,
@@ -82,7 +82,7 @@ class ForecastCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 1),
                   Text(
-                    '${humidity}%',
+                    '$humidity%',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontSize: 7,
                       color: Colors.grey[600],

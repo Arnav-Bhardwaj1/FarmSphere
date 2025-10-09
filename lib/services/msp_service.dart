@@ -13,7 +13,7 @@ class MSPService {
   static Future<List<Map<String, dynamic>>> getMSPPrices() async {
     try {
       // Try to fetch from government API first
-      final url = '$_baseUrl?api-key=$_apiKey&format=json&limit=100';
+      const url = '$_baseUrl?api-key=$_apiKey&format=json&limit=100';
       
       final response = await http.get(Uri.parse(url));
       
