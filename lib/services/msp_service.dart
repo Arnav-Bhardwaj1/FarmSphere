@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../secrets.dart';
 
 class MSPService {
   // Using Indian Government's MSP API from data.gov.in
   static const String _baseUrl = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070';
-  static const String _apiKey = '579b464db66ec23bdd00000162207ffc29514dab55daf171d62aebee';
+  static const String _apiKey = dataGovApiKey;
   
   // Alternative: Using FCI (Food Corporation of India) API
   // static const String _fciBaseUrl = 'https://fci.gov.in/api/msp';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'secrets.dart';
 
 /// A reusable AI chatbot widget using Google Gemini API
 /// 
@@ -67,7 +68,7 @@ class _AIChatbotState extends State<AIChatbot> {
       // Initialize the Gemini model with your API key
       model = GenerativeModel(
         model: 'gemini-2.5-flash',
-        apiKey: 'AIzaSyA3j5nTA3w1zg81rhfTWfkvFfaLo327HZs',
+        apiKey: geminiApiKey,
         generationConfig: GenerationConfig(
           temperature: 0.7,
           topK: 40,
