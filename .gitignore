@@ -67,6 +67,11 @@ lib/secrets.dart
 **/model.tflite
 **/*.tflite
 **/ml_model.tflite
+*.keras
+
+# Notebooks and training artifacts
+Plant_Disease_Model_Training.ipynb
+plant_disease_recog_model_pwp.keras
 
 # Build cache files
 build/

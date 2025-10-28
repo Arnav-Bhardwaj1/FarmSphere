@@ -9,6 +9,7 @@ import 'secrets.dart';
 /// - Text input field with send button
 /// - Integration with Google Gemini for AI responses
 /// - Customizable styling and colors
+/// - Modern gradients and animations
 class AIChatbot extends StatefulWidget {
   /// The title displayed in the app bar
   final String title;
@@ -53,8 +54,10 @@ class AIChatbot extends StatefulWidget {
 class _AIChatbotState extends State<AIChatbot> {
   late GenerativeModel model;
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   List<Map<String, dynamic>> messages = [];
   bool _isLoading = false;
+  bool _showTypingIndicator = false;
 
   @override
   void initState() {
@@ -96,7 +99,21 @@ class _AIChatbotState extends State<AIChatbot> {
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  /// Scroll to bottom
+  void _scrollToBottom() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   /// Send message to Gemini and get response
@@ -114,7 +131,10 @@ class _AIChatbotState extends State<AIChatbot> {
         'timestamp': DateTime.now(),
       });
       _isLoading = true;
+      _showTypingIndicator = true;
     });
+    
+    _scrollToBottom();
 
     try {
       // Create farming-focused prompt
@@ -138,7 +158,10 @@ class _AIChatbotState extends State<AIChatbot> {
           'timestamp': DateTime.now(),
         });
         _isLoading = false;
+        _showTypingIndicator = false;
       });
+      
+      _scrollToBottom();
     } catch (e) {
       print('Error sending message: $e');
       setState(() {
@@ -148,7 +171,10 @@ class _AIChatbotState extends State<AIChatbot> {
           'timestamp': DateTime.now(),
         });
         _isLoading = false;
+        _showTypingIndicator = false;
       });
+      
+      _scrollToBottom();
     }
   }
 
@@ -157,77 +183,159 @@ class _AIChatbotState extends State<AIChatbot> {
     final screenWidth = MediaQuery.of(context).size.width;
     
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: widget.appBarColor,
-        elevation: 0,
-        leading: IconButton(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              widget.appBarColor,
+              widget.appBarColor.withOpacity(0.7),
+              widget.backgroundColor,
+            ],
+            stops: const [0.0, 0.15, 0.3],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Custom App Bar with gradient
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.9)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.smart_toy,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
           widget.title,
           style: widget.titleStyle ?? const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.w600,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
           ),
         ),
-        centerTitle: true,
+                  ],
+                ),
       ),
-      body: Column(
-        children: [
-          // Messages area
+              
+              // Messages area with glass effect
           Expanded(
             child: ListView.builder(
+                  controller: _scrollController,
               padding: const EdgeInsets.all(16),
-              itemCount: messages.length,
+                  itemCount: messages.length + (_showTypingIndicator ? 1 : 0),
               itemBuilder: (context, index) {
+                    if (_showTypingIndicator && index == messages.length) {
+                      return _buildTypingIndicator();
+                    }
                 final message = messages[index];
-                return _buildMessageBubble(message, screenWidth);
+                    return _buildMessageBubble(message, screenWidth, index);
               },
             ),
           ),
           
-          // Loading indicator
+              // Loading indicator with animation
           if (_isLoading)
             Container(
               padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              widget.sendButtonColor.withOpacity(0.8),
+                              widget.sendButtonColor.withOpacity(0.7),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
               child: Row(
                 children: [
-                  const SizedBox(
+                            SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF36946F)),
+                                strokeWidth: 2.5,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Text(
+                            const Text(
                     'AI is thinking...',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                                color: Colors.white,
                       fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                     ),
                   ),
                 ],
               ),
             ),
           
-          // Input area
+              // Input area with glassmorphism
           Container(
-            padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: widget.inputContainerColor,
+                  gradient: LinearGradient(
+                    colors: [
+                      widget.inputContainerColor,
+                      widget.inputContainerColor.withOpacity(0.8),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 20,
+                      offset: const Offset(0, 5),
+                      spreadRadius: 2,
                 ),
               ],
             ),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
             child: Row(
               children: [
                 Expanded(
@@ -235,16 +343,13 @@ class _AIChatbotState extends State<AIChatbot> {
                     controller: _controller,
                     decoration: InputDecoration(
                       hintText: widget.hintText,
-                      hintStyle: widget.hintStyle ?? const TextStyle(
-                        color: Colors.white70,
+                            hintStyle: widget.hintStyle ?? TextStyle(
+                              color: Colors.white.withOpacity(0.7),
                         fontSize: 16,
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.2),
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 12,
@@ -259,30 +364,118 @@ class _AIChatbotState extends State<AIChatbot> {
                     onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
-                const SizedBox(width: 12),
+                      const SizedBox(width: 8),
                 GestureDetector(
                   onTap: _sendMessage,
                   child: Container(
-                    width: 50,
-                    height: 50,
+                          width: 56,
+                          height: 56,
                     decoration: BoxDecoration(
-                      color: widget.sendButtonColor,
-                      borderRadius: BorderRadius.circular(25),
+                            gradient: LinearGradient(
+                              colors: [
+                                widget.sendButtonColor,
+                                widget.sendButtonColor.withOpacity(0.8),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(28),
                       boxShadow: [
                         BoxShadow(
-                          color: widget.sendButtonColor.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
+                                color: widget.sendButtonColor.withOpacity(0.4),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                                spreadRadius: 1,
                         ),
                       ],
                     ),
                     child: const Icon(
-                      Icons.send,
+                            Icons.send_rounded,
                       color: Colors.white,
                       size: 24,
                     ),
                   ),
                 ),
+              ],
+                  ),
+            ),
+          ),
+        ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Build typing indicator
+  Widget _buildTypingIndicator() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: [
+            Container(
+            width: 40,
+            height: 40,
+              decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  widget.appBarColor,
+                  widget.appBarColor.withOpacity(0.7),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Icon(
+              Icons.smart_toy_rounded,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+            decoration: BoxDecoration(
+                color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (int i = 0; i < 3; i++)
+                  TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 600),
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    builder: (context, value, child) {
+                      return Opacity(
+                        opacity: 0.3 + (0.7 * (i == 1 ? value : i == 0 ? (value - 0.3).clamp(0.0, 1.0) : (value - 0.6).clamp(0.0, 1.0))),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[600],
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      );
+                    },
+                    onEnd: () {
+                      if (mounted && _showTypingIndicator) {
+                        setState(() {});
+                      }
+                    },
+                  ),
               ],
             ),
           ),
@@ -291,74 +484,153 @@ class _AIChatbotState extends State<AIChatbot> {
     );
   }
 
-  /// Build individual message bubble
-  Widget _buildMessageBubble(Map<String, dynamic> message, double screenWidth) {
+  /// Build individual message bubble with enhanced styling
+  Widget _buildMessageBubble(Map<String, dynamic> message, double screenWidth, int index) {
     final isUser = message['isUser'] as bool;
     final text = message['text'] as String;
+    final timestamp = message['timestamp'] as DateTime;
     
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-        children: [
-          if (!isUser) ...[
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: widget.appBarColor,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Icon(
-                Icons.smart_toy,
-                color: Colors.white,
-                size: 18,
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
-          Flexible(
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 300 + (index * 50)),
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: 0.8 + (value * 0.2),
+          child: Opacity(
+            opacity: value,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              margin: const EdgeInsets.only(bottom: 16),
+              child: Column(
+                crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (!isUser) ...[
+                        Container(
+                          width: 40,
+                          height: 40,
               decoration: BoxDecoration(
-                color: isUser ? widget.appBarColor : Colors.white,
+                            gradient: LinearGradient(
+                              colors: [
+                                widget.appBarColor,
+                                widget.appBarColor.withOpacity(0.7),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+                                color: widget.appBarColor.withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.smart_toy_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                          decoration: BoxDecoration(
+                            gradient: isUser
+                                ? LinearGradient(
+                                    colors: [
+                                      widget.appBarColor,
+                                      widget.appBarColor.withOpacity(0.8),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  )
+                                : null,
+                            color: isUser ? null : Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(isUser ? 20 : 4),
+                              topRight: Radius.circular(isUser ? 4 : 20),
+                              bottomLeft: const Radius.circular(20),
+                              bottomRight: const Radius.circular(20),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(isUser ? 0.2 : 0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                                spreadRadius: 1,
                   ),
                 ],
               ),
               constraints: BoxConstraints(maxWidth: screenWidth * 0.75),
-              child: Text(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
                 text,
                 style: TextStyle(
-                  fontSize: 16,
+                                  fontSize: 15,
                   color: isUser ? Colors.white : Colors.black87,
-                ),
+                                  height: 1.4,
+                                  fontWeight: isUser ? FontWeight.w400 : FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: isUser ? Colors.white70 : Colors.grey[600],
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
               ),
             ),
           ),
           if (isUser) ...[
-            const SizedBox(width: 8),
+                        const SizedBox(width: 12),
             Container(
-              width: 32,
-              height: 32,
+                          width: 40,
+                          height: 40,
               decoration: BoxDecoration(
-                color: widget.appBarColor,
-                borderRadius: BorderRadius.circular(16),
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF4A90E2),
+                                Color(0xFF357ABD),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF4A90E2).withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
               ),
               child: const Icon(
-                Icons.person,
+                            Icons.person_rounded,
                 color: Colors.white,
-                size: 18,
+                            size: 20,
               ),
             ),
           ],
         ],
       ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
