@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../main_navigation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/location_service.dart';
@@ -197,6 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -227,13 +229,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Welcome to FarmSphere',
+                        t.welcomeTitle,
                         style: Theme.of(context).textTheme.headlineMedium,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Your AI-powered farming companion',
+                        t.welcomeSubtitle,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -248,13 +250,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // Form Fields
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    prefixIcon: Icon(Icons.person),
+                  decoration: InputDecoration(
+                    labelText: t.fullName,
+                    prefixIcon: const Icon(Icons.person),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
+                      return ' ';
                     }
                     return null;
                   },
@@ -264,17 +266,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email),
+                  decoration: InputDecoration(
+                    labelText: t.email,
+                    prefixIcon: const Icon(Icons.email),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return ' ';
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return ' ';
                     }
                     return null;
                   },
@@ -284,17 +286,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 
                 TextFormField(
                   controller: _phoneController,
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
-                    prefixIcon: Icon(Icons.phone),
+                  decoration: InputDecoration(
+                    labelText: t.phoneNumber,
+                    prefixIcon: const Icon(Icons.phone),
                   ),
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
+                      return ' ';
                     }
                     if (value.length < 10) {
-                      return 'Please enter a valid phone number';
+                      return ' ';
                     }
                     return null;
                   },
@@ -308,14 +310,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Expanded(
                       child: TextFormField(
                         controller: _locationController,
-                        decoration: const InputDecoration(
-                          labelText: 'Location (City, State)',
-                          prefixIcon: Icon(Icons.location_on),
-                          hintText: 'Enter location or use Nokia API detection',
+                        decoration: InputDecoration(
+                          labelText: t.location,
+                          prefixIcon: const Icon(Icons.location_on),
+                          hintText: t.locationHint,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your location';
+                            return ' ';
                           }
                           return null;
                         },
@@ -331,7 +333,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Icon(Icons.my_location),
-                      label: const Text('Detect'),
+                      label: Text(t.detect),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                       ),
@@ -356,9 +358,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : const Text(
-                          'Get Started',
-                          style: TextStyle(fontSize: 16),
+                      : Text(
+                          t.getStarted,
+                          style: const TextStyle(fontSize: 16),
                         ),
                 ),
                 
@@ -374,7 +376,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.verified_user),
-                  label: const Text('Verify phone number'),
+                  label: Text(t.verifyPhoneNumber),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),
@@ -400,7 +402,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'What you\'ll get:',
+                        t.featuresHeading,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).brightness == Brightness.dark 
@@ -409,29 +411,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.camera_alt,
-                        text: 'AI Crop Health Scanner',
+                        text: t.feature_ai_scanner,
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.wb_sunny,
-                        text: 'Weather & Alerts',
+                        text: t.feature_weather,
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.trending_up,
-                        text: 'Market Prices & Schemes',
+                        text: t.feature_market,
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.record_voice_over,
-                        text: 'Voice & Local Language Support',
+                        text: t.feature_voice_local,
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.analytics,
-                        text: 'Activity Logging & Analytics',
+                        text: t.feature_activity,
                       ),
-                      const _FeatureItem(
+                      _FeatureItem(
                         icon: Icons.people,
-                        text: 'Farmer Community Platform',
+                        text: t.feature_community,
                       ),
                     ],
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../widgets/profile_option_tile.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -15,10 +16,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Widget build(BuildContext context) {
     final userState = ref.watch(userProvider);
     final appState = ref.watch(appStateProvider);
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text('Profile'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -107,7 +109,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: Icons.language,
-              title: 'Language',
+              title: t.selectLanguage,
               subtitle: 'Current: ${_getLanguageName(appState.selectedLanguage)}',
               onTap: () {
                 _showLanguageDialog();
@@ -151,7 +153,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   _showLogoutDialog();
                 },
                 icon: const Icon(Icons.logout),
-                label: const Text('Logout'),
+                label: Text(t.logout),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -239,17 +241,36 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showLanguageDialog() {
-    final languages = [
+    final languages = const [
       {'code': 'en', 'name': 'English'},
-      {'code': 'hi', 'name': 'Hindi'},
-      {'code': 'te', 'name': 'Telugu'},
-      {'code': 'ta', 'name': 'Tamil'},
+      {'code': 'hi', 'name': 'हिन्दी'},
+      {'code': 'bn', 'name': 'বাংলা'},
+      {'code': 'mr', 'name': 'मराठी'},
+      {'code': 'ta', 'name': 'தமிழ்'},
+      {'code': 'te', 'name': 'తెలుగు'},
+      {'code': 'gu', 'name': 'ગુજરાતી'},
+      {'code': 'ur', 'name': 'اردو'},
+      {'code': 'kn', 'name': 'ಕನ್ನಡ'},
+      {'code': 'ml', 'name': 'മലയാളം'},
+      {'code': 'pa', 'name': 'ਪੰਜਾਬੀ'},
+      {'code': 'as', 'name': 'অসমীয়া'},
+      {'code': 'brx', 'name': 'बोड़ो'},
+      {'code': 'doi', 'name': 'डोगरी'},
+      {'code': 'ks', 'name': 'कश्मीरी'},
+      {'code': 'kok', 'name': 'कोंकणी'},
+      {'code': 'mai', 'name': 'मैथिली'},
+      {'code': 'mni', 'name': 'মৈতৈলোন'},
+      {'code': 'ne', 'name': 'नेपाली'},
+      {'code': 'or', 'name': 'ଓଡ଼ିଆ'},
+      {'code': 'sa', 'name': 'संस्कृतम्'},
+      {'code': 'sat', 'name': 'ᱥᱟᱱᱛᱟᱲᱤ'},
+      {'code': 'sd', 'name': 'سنڌي'},
     ];
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Select Language'),
+        title: Text(AppLocalizations.of(context)!.selectLanguage),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: languages.map((lang) {
@@ -258,12 +279,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               onTap: () {
                 ref.read(appStateProvider.notifier).setLanguage(lang['code']!);
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Language changed to ${lang['name']}'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
+                final t = AppLocalizations.of(context)!;
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(t.changeLanguageSuccess(lang['name']!)),
+                  backgroundColor: Colors.green,
+                ));
               },
             );
           }).toList(),
@@ -271,7 +291,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
         ],
       ),

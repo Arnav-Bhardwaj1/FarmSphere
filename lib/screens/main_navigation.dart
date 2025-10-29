@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'home_screen.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
 import 'market/market_screen.dart';
@@ -29,46 +30,50 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
     const ProfileScreen(),
   ];
 
-  final List<NavigationItem> _navigationItems = [
-    NavigationItem(
-      icon: Icons.home,
-      activeIcon: Icons.home,
-      label: 'Home',
-    ),
-    NavigationItem(
-      icon: Icons.camera_alt_outlined,
-      activeIcon: Icons.camera_alt,
-      label: 'Crop Health',
-    ),
-    NavigationItem(
-      icon: Icons.wb_sunny_outlined,
-      activeIcon: Icons.wb_sunny,
-      label: 'Weather',
-    ),
-    NavigationItem(
-      icon: Icons.trending_up_outlined,
-      activeIcon: Icons.trending_up,
-      label: 'Market',
-    ),
-    NavigationItem(
-      icon: Icons.analytics_outlined,
-      activeIcon: Icons.analytics,
-      label: 'Activities',
-    ),
-    NavigationItem(
-      icon: Icons.people_outline,
-      activeIcon: Icons.people,
-      label: 'Community',
-    ),
-    NavigationItem(
-      icon: Icons.person_outline,
-      activeIcon: Icons.person,
-      label: 'Profile',
-    ),
-  ];
+  List<NavigationItem> _buildNavigationItems(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    return [
+      NavigationItem(
+        icon: Icons.home,
+        activeIcon: Icons.home,
+        label: t.navHome,
+      ),
+      NavigationItem(
+        icon: Icons.camera_alt_outlined,
+        activeIcon: Icons.camera_alt,
+        label: t.navCropHealth,
+      ),
+      NavigationItem(
+        icon: Icons.wb_sunny_outlined,
+        activeIcon: Icons.wb_sunny,
+        label: t.navWeather,
+      ),
+      NavigationItem(
+        icon: Icons.trending_up_outlined,
+        activeIcon: Icons.trending_up,
+        label: t.navMarket,
+      ),
+      NavigationItem(
+        icon: Icons.analytics_outlined,
+        activeIcon: Icons.analytics,
+        label: t.navActivities,
+      ),
+      NavigationItem(
+        icon: Icons.people_outline,
+        activeIcon: Icons.people,
+        label: t.navCommunity,
+      ),
+      NavigationItem(
+        icon: Icons.person_outline,
+        activeIcon: Icons.person,
+        label: t.navProfile,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final items = _buildNavigationItems(context);
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -97,8 +102,8 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
           unselectedItemColor: Colors.grey[600],
           selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
           unselectedLabelStyle: const TextStyle(fontSize: 12),
-          items: _navigationItems.map((item) {
-            final isSelected = _navigationItems.indexOf(item) == _currentIndex;
+          items: items.map((item) {
+            final isSelected = items.indexOf(item) == _currentIndex;
             return BottomNavigationBarItem(
               icon: Icon(
                 isSelected ? item.activeIcon : item.icon,
@@ -114,14 +119,17 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AIChatbot(
-                title: 'FarmSphere AI Assistant',
-                backgroundColor: Color(0xFFF8F9FA),
-                appBarColor: Color(0xFF36946F),
-                inputContainerColor: Color(0xFF2D3648),
-                sendButtonColor: Color(0xFF36946F),
-                hintText: 'Ask me about farming...',
-              ),
+              builder: (context) {
+                final t = AppLocalizations.of(context)!;
+                return AIChatbot(
+                  title: t.chatbotTitle,
+                  backgroundColor: const Color(0xFFF8F9FA),
+                  appBarColor: const Color(0xFF36946F),
+                  inputContainerColor: const Color(0xFF2D3648),
+                  sendButtonColor: const Color(0xFF36946F),
+                  hintText: t.chatbotHint,
+                );
+              },
             ),
           );
         },

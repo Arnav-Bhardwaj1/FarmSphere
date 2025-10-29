@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
+import 'language_selection_screen.dart';
 import 'auth/login_screen.dart';
 import 'main_navigation.dart';
 
@@ -55,8 +57,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
     if (mounted) {
       final userState = ref.read(userProvider);
       final appState = ref.read(appStateProvider);
-      
-      if (userState.isLoggedIn) {
+
+      if (appState.isFirstLaunch) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LanguageSelectionScreen()),
+        );
+      } else if (userState.isLoggedIn) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const MainNavigation()),
         );
@@ -114,7 +120,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     
                     // App Name
                     Text(
-                      'FarmSphere',
+                      AppLocalizations.of(context)!.appTitle,
                       style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -124,7 +130,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                     
                     // Tagline
                     Text(
-                      'AI-Powered Farming Assistant',
+                      AppLocalizations.of(context)!.tagline,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white.withOpacity(0.9),
                       ),
