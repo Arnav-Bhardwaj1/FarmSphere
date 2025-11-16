@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/activity_item.dart';
 import '../../widgets/analytics_card.dart';
+import '../../utils/localization_helpers.dart';
 import 'add_activity_screen.dart';
 
 class ActivitiesScreen extends ConsumerStatefulWidget {
@@ -31,10 +33,19 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
   @override
   Widget build(BuildContext context) {
     final activityState = ref.watch(activityProvider);
+    final userState = ref.watch(userProvider);
+    final t = AppLocalizations.of(context)!;
+    
+    // Load activities when screen is built and user is logged in
+    if (userState.isLoggedIn && userState.userId != null && activityState.activities == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(activityProvider.notifier).loadActivities(userState.userId!);
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activities & Analytics'),
+        title: Text(t.activitiesAnalytics),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -49,9 +60,9 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Activities', icon: Icon(Icons.assignment)),
-            Tab(text: 'Analytics', icon: Icon(Icons.analytics)),
+          tabs: [
+            Tab(text: t.activities, icon: const Icon(Icons.assignment)),
+            Tab(text: t.analyticsTab, icon: const Icon(Icons.analytics)),
           ],
         ),
       ),
@@ -66,9 +77,12 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
   }
 
   Widget _buildActivitiesTab(ActivityState activityState) {
+    final userState = ref.watch(userProvider);
     return RefreshIndicator(
       onRefresh: () async {
-        ref.read(activityProvider.notifier).loadActivities();
+        if (userState.userId != null) {
+          await ref.read(activityProvider.notifier).loadActivities(userState.userId!);
+        }
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -82,7 +96,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                 children: [
                   Expanded(
                     child: AnalyticsCard(
-                      title: 'Total Activities',
+                      title: AppLocalizations.of(context)!.totalActivities,
                       value: '${activityState.analytics!['totalActivities'] ?? 0}',
                       icon: Icons.assignment,
                       color: Colors.blue,
@@ -91,7 +105,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                   const SizedBox(width: 12),
                   Expanded(
                     child: AnalyticsCard(
-                      title: 'This Month',
+                      title: AppLocalizations.of(context)!.thisMonth,
                       value: '${activityState.analytics!['thisMonth'] ?? 0}',
                       icon: Icons.calendar_month,
                       color: Colors.green,
@@ -187,7 +201,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                           );
                         },
                         icon: const Icon(Icons.add),
-                        label: const Text('Add Activity'),
+                        label: Text(AppLocalizations.of(context)!.addActivity),
                       ),
                     ],
                   ),
@@ -200,6 +214,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
   }
 
   Widget _buildAnalyticsTab(ActivityState activityState) {
+    final t = AppLocalizations.of(context)!;
     if (activityState.analytics == null) {
       return const Center(
         child: Padding(
@@ -224,7 +239,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Productivity Overview',
+                    t.productivityOverview,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
@@ -237,7 +252,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Overall Productivity',
+                              t.overallProductivityLabel,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Colors.grey[600],
                               ),
@@ -278,7 +293,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Crop Distribution',
+                      t.cropDistribution,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -296,7 +311,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  crop,
+                                  LocalizationHelpers.getLocalizedCropName(t, crop),
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -351,20 +366,20 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen>
                     ],
                   ),
                   const SizedBox(height: 12),
-                  const _ActivityTip(
+                  _ActivityTip(
                     icon: Icons.schedule,
-                    title: 'Regular Logging',
-                    description: 'Log activities daily for better insights and recommendations.',
+                    title: t.regularLogging,
+                    description: t.regularLoggingTip,
                   ),
-                  const _ActivityTip(
+                  _ActivityTip(
                     icon: Icons.photo_camera,
-                    title: 'Photo Documentation',
-                    description: 'Take photos of your activities for visual tracking.',
+                    title: t.photoDocumentation,
+                    description: t.photoDocumentationTip,
                   ),
-                  const _ActivityTip(
+                  _ActivityTip(
                     icon: Icons.analytics,
-                    title: 'Review Analytics',
-                    description: 'Check your productivity trends and optimize accordingly.',
+                    title: t.reviewAnalytics,
+                    description: t.reviewAnalyticsTip,
                   ),
                 ],
               ),
@@ -396,7 +411,7 @@ class _ActivityTip extends StatelessWidget {
   final String title;
   final String description;
 
-  const _ActivityTip({
+  _ActivityTip({
     required this.icon,
     required this.title,
     required this.description,

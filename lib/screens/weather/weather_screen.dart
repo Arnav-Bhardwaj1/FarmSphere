@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/weather_card.dart';
 import '../../widgets/alert_card.dart';
@@ -31,10 +32,11 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
     final weatherState = ref.watch(weatherProvider);
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weather & Alerts'),
+        title: Text(t.weatherAlertsTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -71,7 +73,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Failed to load weather data',
+                          t.failedToLoadWeather,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 4),
@@ -86,7 +88,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                         ElevatedButton.icon(
                           onPressed: _loadWeatherData,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Retry'),
+                          label: Text(t.retry),
                         ),
                       ],
                     ),
@@ -100,7 +102,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
               // Weather Forecast
               if (weatherState.forecast != null && weatherState.forecast!.isNotEmpty) ...[
                 Text(
-                  '7-Day Forecast',
+                  t.dayForecast,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -128,7 +130,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
               // Weather Alerts
               if (weatherState.alerts != null && weatherState.alerts!.isNotEmpty) ...[
                 Text(
-                  'Weather Alerts',
+                  t.weatherAlertsSection,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -158,7 +160,7 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Weather Tips',
+                            t.weatherTips,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
@@ -166,25 +168,25 @@ class _WeatherScreenState extends ConsumerState<WeatherScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const _WeatherTip(
+                      _WeatherTip(
                         icon: Icons.water_drop,
-                        title: 'Irrigation',
-                        description: 'Water your crops early morning or late evening to reduce evaporation.',
+                        title: t.irrigation,
+                        description: t.irrigationTip,
                       ),
-                      const _WeatherTip(
+                      _WeatherTip(
                         icon: Icons.wb_sunny,
-                        title: 'Sun Protection',
-                        description: 'Use shade nets during extreme heat to protect young plants.',
+                        title: t.sunProtection,
+                        description: t.sunProtectionTip,
                       ),
-                      const _WeatherTip(
+                      _WeatherTip(
                         icon: Icons.grain,
-                        title: 'Rain Management',
-                        description: 'Ensure proper drainage to prevent waterlogging during heavy rains.',
+                        title: t.rainManagement,
+                        description: t.rainManagementTip,
                       ),
-                      const _WeatherTip(
+                      _WeatherTip(
                         icon: Icons.air,
-                        title: 'Wind Protection',
-                        description: 'Install windbreaks to protect crops from strong winds.',
+                        title: t.windProtection,
+                        description: t.windProtectionTip,
                       ),
                     ],
                   ),

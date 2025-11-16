@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 
 class CommunityChatCard extends StatelessWidget {
   final Map<String, dynamic> chat;
+  final VoidCallback? onTap;
 
   const CommunityChatCard({
     super.key,
     required this.chat,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final unreadCount = chat['unread'] as int;
     
     return Card(
@@ -71,7 +75,7 @@ class CommunityChatCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '${chat['participants']} members',
+                  '${chat['participants']} ${t.members}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey[500],
                   ),
@@ -87,48 +91,8 @@ class CommunityChatCard extends StatelessWidget {
             ),
           ],
         ),
-        onTap: () {
-          _showChatDetails(context, chat);
-        },
-      ),
-    );
-  }
-
-  void _showChatDetails(BuildContext context, Map<String, dynamic> chat) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(chat['name']),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Members: ${chat['participants']}'),
-            Text('Last message: ${chat['time']}'),
-            const SizedBox(height: 16),
-            const Text('Chat functionality will be available soon.'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Chat feature coming soon'),
-                  backgroundColor: Colors.orange,
-                ),
-              );
-            },
-            child: const Text('Join Chat'),
-          ),
-        ],
+        onTap: onTap,
       ),
     );
   }
 }
-

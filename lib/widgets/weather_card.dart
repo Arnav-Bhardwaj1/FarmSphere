@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 
 class WeatherCard extends StatelessWidget {
   final Map<String, dynamic> weather;
@@ -47,7 +48,7 @@ class WeatherCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Current Weather',
+                      AppLocalizations.of(context)!.currentWeatherTitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 14,
@@ -56,7 +57,7 @@ class WeatherCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      weather['location'] ?? 'Your Location',
+                      weather['location'] ?? AppLocalizations.of(context)!.yourLocation,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -66,6 +67,8 @@ class WeatherCard extends StatelessWidget {
                     if (weather['country'] != null) ...[
                       const SizedBox(height: 2),
                       Text(
+                        // Note: City and country names are proper nouns and typically 
+                        // remain in their original language. The API returns English names.
                         weather['country'] ?? '',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.white.withOpacity(0.8),
@@ -106,7 +109,7 @@ class WeatherCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    weather['condition'] ?? 'Unknown',
+                    _localizeCondition(context, weather['condition']),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -145,7 +148,7 @@ class WeatherCard extends StatelessWidget {
                         child: _buildWeatherDetailCard(
                           context,
                           Icons.water_drop,
-                          'Humidity',
+                          AppLocalizations.of(context)!.humidityLabel,
                           '${weather['humidity'] ?? 0}%',
                           Colors.blue[300]!,
                         ),
@@ -155,7 +158,7 @@ class WeatherCard extends StatelessWidget {
                         child: _buildWeatherDetailCard(
                           context,
                           Icons.air,
-                          'Wind',
+                          AppLocalizations.of(context)!.windLabel,
                           '${weather['windSpeed'] ?? 0} km/h',
                           Colors.green[300]!,
                         ),
@@ -170,7 +173,7 @@ class WeatherCard extends StatelessWidget {
                         child: _buildWeatherDetailCard(
                           context,
                           Icons.visibility,
-                          'Visibility',
+                          AppLocalizations.of(context)!.visibilityLabel,
                           '${weather['visibility'] ?? 0} km',
                           Colors.purple[300]!,
                         ),
@@ -180,7 +183,7 @@ class WeatherCard extends StatelessWidget {
                         child: _buildWeatherDetailCard(
                           context,
                           Icons.wb_sunny,
-                          'UV Index',
+                          AppLocalizations.of(context)!.uvIndexLabel,
                           '${weather['uvIndex'] ?? 0}',
                           Colors.yellow[300]!,
                         ),
@@ -289,6 +292,31 @@ class WeatherCard extends StatelessWidget {
         return Icons.thunderstorm;
       default:
         return Icons.wb_sunny;
+    }
+  }
+
+  String _localizeCondition(BuildContext context, String? condition) {
+    final t = AppLocalizations.of(context)!;
+    final value = (condition ?? '').toString();
+    switch (value.toLowerCase()) {
+      case 'sunny':
+        return t.conditionSunny;
+      case 'partly cloudy':
+        return t.conditionPartlyCloudy;
+      case 'cloudy':
+        return t.conditionCloudy;
+      case 'rainy':
+        return t.conditionRainy;
+      case 'stormy':
+        return t.conditionStormy;
+      case 'haze':
+        return t.conditionHaze;
+      case 'fog':
+        return t.conditionFog;
+      case 'mist':
+        return t.conditionMist;
+      default:
+        return value.isEmpty ? t.conditionUnknown : value;
     }
   }
 }

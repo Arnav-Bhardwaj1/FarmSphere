@@ -1,6 +1,6 @@
 # FarmSphere - AI-Powered Farming Assistant
 
-FarmSphere is a comprehensive Flutter application designed to assist farmers with AI-powered crop health diagnosis, weather monitoring, market prices, and community support.
+FarmSphere is a comprehensive Flutter application designed to assist farmers with ML-powered crop health diagnosis, AI-powered chatbot assistance, weather monitoring, market prices, multilingual support, and community features.
 
 ## 🌱 Features
 
@@ -10,23 +10,29 @@ FarmSphere is a comprehensive Flutter application designed to assist farmers wit
 - **AI Chatbot** - For advices, insights and discussions with an AI chatbot for disease prevention & handling, with farming tips and suggestions for an optimal yield.
 - **Weather & Alerts** - Real-time weather updates and agricultural alerts
 - **Market Prices & Schemes** - Access to current crop prices and government schemes
-- **Voice & Local Language Support** - Multilingual support for better accessibility
+- **Multilingual Support (Local Language Support)** - Full app and chatbot support for 22+ Indian languages like Hindi, Tamil, Marathi and more.
 - **Activity Logging & Analytics** - Track farm practices and get personalized insights
 - **Farmer Community Platform** - Connect with fellow farmers and agricultural experts
+  - Create posts, interact with likes and comments, save/bookmark content
+  - Join community chat rooms for discussions
+  - Consult with agricultural experts
 
 ### Technical Features
 - Modern Flutter architecture with Riverpod state management
 - Material Design 3 UI with dark/light theme support
+- Comprehensive multilingual support (22+ Indian languages) for entire app and AI chatbot
 - Image capture and gallery integration
-- Local data persistence with SQLite
+- Local data persistence with SQLite (offline caching)
+- MongoDB backend integration for data synchronization
 - Responsive design for various screen sizes
+- Real-time state management for community features
+- Interactive UI with smooth animations and transitions
 
-## 🚀 Getting Started
+## Getting Started:
 
 ### Prerequisites
 - Flutter SDK (3.0.0 or higher)
 - Dart SDK (3.0.0 or higher)
-- Android Studio / VS Code
 - Android SDK (API level 21 or higher)
 
 ### Installation
@@ -73,7 +79,7 @@ flutter build apk --release
 flutter build appbundle --release
 ```
 
-## 📱 Screenshots
+## Screens:
 
 The app includes the following main screens:
 - **Home Dashboard** - Overview of all features and quick actions
@@ -82,7 +88,7 @@ The app includes the following main screens:
 - **Weather Screen** - Current weather and 7-day forecast
 - **Market Screen** - Crop prices and government schemes
 - **Activities Screen** - Farm activity logging and analytics
-- **Community Screen** - Farmer community and expert consultation
+- **Community Screen** - Farmer community platform with posts, chats, and expert consultations
 - **Profile Screen** - User settings and preferences
 
 ## 🏗️ Architecture
@@ -91,6 +97,7 @@ The app includes the following main screens:
 - **Riverpod** for state management and dependency injection
 - **Provider** for local state management
 - **SharedPreferences** for user settings persistence
+- **CommunityProvider** for managing posts, comments, likes, chats, and expert interactions
 
 ### Project Structure
 ```
@@ -108,11 +115,14 @@ lib/
 │   ├── market/
 │   ├── activities/
 │   ├── community/
+│   │   └── community_screen.dart
 │   └── profile/
 ├── widgets/
 │   ├── feature_card.dart
 │   ├── weather_card.dart
 │   ├── diagnosis_result_card.dart
+│   ├── community_post_card.dart
+│   ├── community_chat_card.dart
 │   └── ...
 └── utils/
 ```
@@ -121,11 +131,78 @@ lib/
 
 ### API Keys
 **For production deployment, you'll need to configure:**
-- Network As a Code (Location Retrival API)
+- Network As a Code (Location Retrieval API)
 - Weather API (OpenWeatherMap or similar)
 - Market data API
 - AI/ML service for crop health analysis
 - Push notification service
+- Google Generative AI (for chatbot) - Configure in `lib/secrets.dart`
+
+### Backend Services
+
+#### Plant Disease Detection Server
+The app includes a Python Flask backend for plant disease recognition:
+
+1. **Setup the server:**
+   ```bash
+   cd server
+   pip install -r requirements.txt
+   python plant_disease_api.py
+   ```
+   
+2. **Server runs on:** `http://localhost:5000`
+
+3. **Endpoints:**
+   - `GET /health` - Check server status
+   - `POST /predict` - Predict plant disease from image
+
+See [server/README.md](server/README.md) for detailed setup instructions.
+
+#### MongoDB Backend
+The app includes a MongoDB backend for data persistence:
+
+1. **Setup MongoDB:**
+   - **Option 1 (Local)**: Install MongoDB Community Server
+   - **Option 2 (Cloud)**: Use MongoDB Atlas (free tier available)
+   - See [server/README_MONGODB.md](server/README_MONGODB.md) for detailed setup
+
+2. **Configure connection:**
+   ```bash
+   cd server
+   # Copy env.example to .env and update with your MongoDB connection string
+   cp env.example .env
+   # Edit .env and add your MongoDB URI
+   ```
+
+3. **Install dependencies and start server:**
+   ```bash
+   pip install -r requirements.txt
+   python plant_disease_api.py
+   ```
+
+4. **API Endpoints:**
+   - Users: `/api/users`
+   - Posts: `/api/posts`
+   - Comments: `/api/posts/<post_id>/comments`
+   - Activities: `/api/users/<user_id>/activities`
+   - Crop Health: `/api/users/<user_id>/crop-health`
+   - Chat: `/api/chats/<chat_id>/messages`
+
+The Flutter app automatically connects to the backend when available and falls back to local state if the API is unavailable.
+
+#### Community Features
+Community features (posts, comments, chats) now use MongoDB backend for persistence:
+- Posts, comments, likes, and saves are stored in MongoDB
+- Activities and crop health history are synced to the database
+- Real-time synchronization across devices when backend is available
+- Offline support with local state fallback
+
+### Language Support
+The app supports 22+ Indian languages including:
+- **Major Languages**: Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Urdu, Punjabi
+- **Regional Languages**: Assamese, Odia, Bodo, Dogri, Konkani, Maithili, Manipuri, Nepali, Sanskrit, Santhali, Sindhi
+- Language selection is available on first launch and can be changed from the profile settings
+- All app screens, UI elements, and AI chatbot responses support multilingual interface
 
 ### Permissions
 The app requires the following permissions:
@@ -148,11 +225,21 @@ Key dependencies include:
 - `flutter_riverpod` - State management
 - `image_picker` - Camera and gallery access
 - `shared_preferences` - Local storage
-- `sqflite` - Database
+- `sqflite` - Local database (for offline caching)
 - `http` - API calls
 - `geolocator` - Location services
 - `speech_to_text` - Voice input
 - `flutter_tts` - Text-to-speech
+- `google_generative_ai` - AI chatbot integration
+- `socket_io_client` - Real-time communication
+- `url_launcher` - Open external links
+- `cached_network_image` - Image caching
+
+**Backend dependencies (Python):**
+- `flask` - Web framework
+- `pymongo` - MongoDB driver
+- `python-dotenv` - Environment variables
+- `tensorflow` - ML model for plant disease detection
 
 ## 🤝 Contributing
 

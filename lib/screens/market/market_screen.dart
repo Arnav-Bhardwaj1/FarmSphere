@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/price_card.dart';
 import '../../widgets/scheme_card.dart';
@@ -37,10 +38,11 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
   @override
   Widget build(BuildContext context) {
     final marketState = ref.watch(marketPricesProvider);
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Market Prices & Schemes'),
+        title: Text(t.marketPricesSchemes),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -49,10 +51,10 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'MSP', icon: Icon(Icons.account_balance)),
-            Tab(text: 'Market', icon: Icon(Icons.trending_up)),
-            Tab(text: 'Schemes', icon: Icon(Icons.card_giftcard)),
+          tabs: [
+            Tab(text: t.msp, icon: const Icon(Icons.account_balance)),
+            Tab(text: t.marketTab, icon: const Icon(Icons.trending_up)),
+            Tab(text: t.schemesTab, icon: const Icon(Icons.card_giftcard)),
           ],
         ),
       ),
@@ -91,7 +93,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Minimum Support Price (MSP)',
+                          AppLocalizations.of(context)!.minimumSupportPrice,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -100,7 +102,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Government guaranteed minimum prices for agricultural commodities. These prices are announced before each sowing season to help farmers make informed decisions.',
+                      AppLocalizations.of(context)!.mspDescription,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -133,7 +135,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Failed to load MSP data',
+                        AppLocalizations.of(context)!.failedToLoadMSP,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 4),
@@ -148,7 +150,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ElevatedButton.icon(
                         onPressed: _loadMarketData,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                          label: Text(AppLocalizations.of(context)!.retry),
                       ),
                     ],
                   ),
@@ -156,7 +158,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
               )
             else if (marketState.prices != null && marketState.prices!.isNotEmpty) ...[
               Text(
-                'Current MSP Rates (2024-25)',
+                AppLocalizations.of(context)!.currentMSPRates,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -181,7 +183,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No MSP data available',
+                        AppLocalizations.of(context)!.noMSPData,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -220,7 +222,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Market Prices',
+                          AppLocalizations.of(context)!.marketPricesTitle,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -229,7 +231,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Real-time crop prices from major mandis across India. Prices are updated regularly and reflect current market conditions.',
+                      AppLocalizations.of(context)!.marketPricesDescription,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -262,7 +264,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Failed to load market data',
+                        AppLocalizations.of(context)!.failedToLoadMarket,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 4),
@@ -277,7 +279,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ElevatedButton.icon(
                         onPressed: _loadMarketData,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                          label: Text(AppLocalizations.of(context)!.retry),
                       ),
                     ],
                   ),
@@ -285,7 +287,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
               )
             else if (marketState.prices != null && marketState.prices!.isNotEmpty) ...[
               Text(
-                'Current Market Prices',
+                AppLocalizations.of(context)!.currentMarketPrices,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -310,7 +312,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No market data available',
+                        AppLocalizations.of(context)!.noMarketData,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -349,7 +351,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'Government Schemes',
+                          AppLocalizations.of(context)!.governmentSchemes,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
@@ -358,7 +360,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Explore various government schemes and subsidies available for farmers. Check eligibility and apply online.',
+                      AppLocalizations.of(context)!.schemesDescription,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -391,7 +393,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Failed to load schemes data',
+                        AppLocalizations.of(context)!.failedToLoadSchemes,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 4),
@@ -406,7 +408,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ElevatedButton.icon(
                         onPressed: _loadMarketData,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                          label: Text(AppLocalizations.of(context)!.retry),
                       ),
                     ],
                   ),
@@ -414,7 +416,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
               )
             else if (marketState.schemes != null && marketState.schemes!.isNotEmpty) ...[
               Text(
-                'Available Schemes',
+                AppLocalizations.of(context)!.availableSchemes,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -439,7 +441,7 @@ class _MarketScreenState extends ConsumerState<MarketScreen>
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No schemes available',
+                        AppLocalizations.of(context)!.noSchemesAvailable,
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.grey[600],
                         ),

@@ -75,6 +75,8 @@ class LanguageSelectionScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     await ref.read(appStateProvider.notifier).setFirstLaunchComplete();
+                    // Give MaterialApp time to rebuild with new locale
+                    await Future.delayed(const Duration(milliseconds: 100));
                     final userState = ref.read(userProvider);
                     if (context.mounted) {
                       Navigator.of(context).pushReplacement(

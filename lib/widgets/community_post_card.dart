@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 
 class CommunityPostCard extends StatelessWidget {
   final Map<String, dynamic> post;
+  final bool isLiked;
+  final bool isSaved;
+  final List<Map<String, dynamic>> comments;
+  final VoidCallback? onLike;
+  final VoidCallback? onSave;
+  final VoidCallback? onComment;
+  final VoidCallback? onShare;
+  final VoidCallback? onReport;
+  final VoidCallback? onBlock;
+  final VoidCallback? onCopyLink;
 
   const CommunityPostCard({
     super.key,
     required this.post,
+    this.isLiked = false,
+    this.isSaved = false,
+    this.comments = const [],
+    this.onLike,
+    this.onSave,
+    this.onComment,
+    this.onShare,
+    this.onReport,
+    this.onBlock,
+    this.onCopyLink,
   });
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
@@ -102,38 +124,32 @@ class CommunityPostCard extends StatelessWidget {
               children: [
                 _buildActionButton(
                   context,
-                  Icons.thumb_up_outlined,
+                  isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                   '${post['likes']}',
-                  () {
-                    // TODO: Implement like functionality
-                  },
+                  onLike ?? () {},
+                  color: isLiked ? Theme.of(context).colorScheme.primary : Colors.grey[600]!,
                 ),
                 const SizedBox(width: 24),
                 _buildActionButton(
                   context,
                   Icons.comment_outlined,
                   '${post['comments']}',
-                  () {
-                    // TODO: Implement comment functionality
-                  },
+                  onComment ?? () {},
                 ),
                 const SizedBox(width: 24),
                 _buildActionButton(
                   context,
                   Icons.share_outlined,
-                  'Share',
-                  () {
-                    // TODO: Implement share functionality
-                  },
+                  t.share,
+                  onShare ?? () {},
                 ),
                 const Spacer(),
                 _buildActionButton(
                   context,
-                  Icons.bookmark_outline,
-                  'Save',
-                  () {
-                    // TODO: Implement save functionality
-                  },
+                  isSaved ? Icons.bookmark : Icons.bookmark_outline,
+                  t.saveAction,
+                  onSave ?? () {},
+                  color: isSaved ? Theme.of(context).colorScheme.primary : Colors.grey[600]!,
                 ),
               ],
             ),
@@ -147,8 +163,9 @@ class CommunityPostCard extends StatelessWidget {
     BuildContext context,
     IconData icon,
     String label,
-    VoidCallback onTap,
-  ) {
+    VoidCallback onTap, {
+    Color? color,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
@@ -160,13 +177,13 @@ class CommunityPostCard extends StatelessWidget {
             Icon(
               icon,
               size: 18,
-              color: Colors.grey[600],
+              color: color ?? Colors.grey[600],
             ),
             const SizedBox(width: 4),
             Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
+                color: color ?? Colors.grey[600],
               ),
             ),
           ],
@@ -176,6 +193,7 @@ class CommunityPostCard extends StatelessWidget {
   }
 
   void _showPostOptions(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       builder: (context) => Container(
@@ -185,26 +203,26 @@ class CommunityPostCard extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.report),
-              title: const Text('Report Post'),
+              title: Text(t.reportPost),
               onTap: () {
                 Navigator.of(context).pop();
-                // TODO: Implement report functionality
+                onReport?.call();
               },
             ),
             ListTile(
               leading: const Icon(Icons.block),
-              title: const Text('Block User'),
+              title: Text(t.blockUser),
               onTap: () {
                 Navigator.of(context).pop();
-                // TODO: Implement block functionality
+                onBlock?.call();
               },
             ),
             ListTile(
               leading: const Icon(Icons.copy),
-              title: const Text('Copy Link'),
+              title: Text(t.copyLink),
               onTap: () {
                 Navigator.of(context).pop();
-                // TODO: Implement copy link functionality
+                onCopyLink?.call();
               },
             ),
           ],
@@ -213,4 +231,3 @@ class CommunityPostCard extends StatelessWidget {
     );
   }
 }
-

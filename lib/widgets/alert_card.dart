@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
+import '../utils/alert_localization_helper.dart';
 
 class AlertCard extends StatelessWidget {
   final Map<String, dynamic> alert;
@@ -10,6 +12,7 @@ class AlertCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final severity = alert['severity']?.toString().toLowerCase() ?? 'low';
     final color = _getSeverityColor(severity);
     
@@ -48,7 +51,7 @@ class AlertCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        alert['type'] ?? 'Alert',
+                        _localizeType(context, alert['type']),
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: color,
                           fontWeight: FontWeight.w600,
@@ -62,7 +65,7 @@ class AlertCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          severity.toUpperCase(),
+                          _localizeSeverity(context, severity),
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: color,
                             fontWeight: FontWeight.w500,
@@ -74,7 +77,11 @@ class AlertCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    alert['message'] ?? '',
+                    AlertLocalizationHelper.getLocalizedMessage(
+                      t,
+                      alert['type'] ?? '',
+                      alert['message'] ?? '',
+                    ),
                     style: Theme.of(context).textTheme.bodyMedium,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -82,7 +89,7 @@ class AlertCard extends StatelessWidget {
                   if (alert['time'] != null) ...[
                     const SizedBox(height: 4),
                     Text(
-                      _formatTime(alert['time']),
+                      _formatTime(context, alert['time']),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -127,21 +134,68 @@ class AlertCard extends StatelessWidget {
     }
   }
 
-  String _formatTime(String timeString) {
+  String _formatTime(BuildContext context, String timeString) {
+    final t = AppLocalizations.of(context)!;
     try {
       final time = DateTime.parse(timeString);
       final now = DateTime.now();
       final difference = time.difference(now);
       
       if (difference.inHours > 0) {
-        return 'In ${difference.inHours}h';
+        return t.alertInHours(difference.inHours);
       } else if (difference.inMinutes > 0) {
-        return 'In ${difference.inMinutes}m';
+        return t.alertInMinutes(difference.inMinutes);
       } else {
-        return 'Now';
+        return t.alertNow;
       }
     } catch (e) {
-      return 'Soon';
+      return t.alertSoon;
+    }
+  }
+
+  String _localizeType(BuildContext context, String? type) {
+    final t = AppLocalizations.of(context)!;
+    final value = (type ?? '').toString().toLowerCase();
+    if (value.contains('cold wave')) {
+      return t.alertTypeColdWave;
+    } else if (value.contains('fog')) {
+      return t.alertTypeFogWarning;
+    } else if (value.contains('heavy rain')) {
+      return t.alertTypeHeavyRain;
+    } else if (value.contains('rain alert') || value.contains('rain')) {
+      return t.alertTypeRain;
+    } else if (value.contains('flood')) {
+      return t.alertTypeFlood;
+    } else if (value.contains('heat wave')) {
+      return t.alertTypeHeatWave;
+    } else if (value.contains('water scarcity')) {
+      return t.alertTypeWaterScarcity;
+    } else if (value.contains('frost')) {
+      return t.alertTypeFrost;
+    } else if (value.contains('cold weather')) {
+      return t.alertTypeColdWeather;
+    } else if (value.contains('pest')) {
+      return t.alertTypePest;
+    } else if (value.contains('weather alert') || value.contains('weather')) {
+      return t.alertTypeWeather;
+    } else if (value.contains('disease')) {
+      return t.alertTypeDisease;
+    } else {
+      return value.isEmpty ? t.alertGeneric : type ?? '';
+    }
+  }
+
+  String _localizeSeverity(BuildContext context, String severity) {
+    final t = AppLocalizations.of(context)!;
+    switch (severity.toLowerCase()) {
+      case 'high':
+        return t.severityHigh;
+      case 'medium':
+        return t.severityMedium;
+      case 'low':
+        return t.severityLow;
+      default:
+        return severity.toUpperCase();
     }
   }
 }

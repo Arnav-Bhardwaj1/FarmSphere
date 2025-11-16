@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
+import '../utils/localization_helpers.dart';
 
 class ActivityItem extends StatelessWidget {
   final Map<String, dynamic> activity;
@@ -10,6 +12,7 @@ class ActivityItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final type = activity['type'] ?? 'Unknown';
     final crop = activity['crop'] ?? 'Unknown';
     final notes = activity['notes'] ?? '';
@@ -47,14 +50,14 @@ class ActivityItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    type,
+                    _localizeType(context, type),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    crop,
+                    LocalizationHelpers.getLocalizedCropName(t, crop),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -79,13 +82,13 @@ class ActivityItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  _formatDate(date),
+                  _formatDate(context, date),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
-                  _formatTime(date),
+                  _formatTime(context, date),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey[500],
                   ),
@@ -144,22 +147,23 @@ class ActivityItem extends StatelessWidget {
     }
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(BuildContext context, DateTime date) {
+    final t = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
     
     if (difference == 0) {
-      return 'Today';
+      return t.today;
     } else if (difference == 1) {
-      return 'Yesterday';
+      return t.yesterday;
     } else if (difference < 7) {
-      return '${difference}d ago';
+      return t.daysAgo(difference);
     } else {
       return '${date.day}/${date.month}';
     }
   }
 
-  String _formatTime(DateTime date) {
+  String _formatTime(BuildContext context, DateTime date) {
     final hour = date.hour;
     final minute = date.minute.toString().padLeft(2, '0');
     
@@ -167,6 +171,34 @@ class ActivityItem extends StatelessWidget {
       return '${hour == 0 ? 12 : hour}:$minute AM';
     } else {
       return '${hour == 12 ? 12 : hour - 12}:$minute PM';
+    }
+  }
+
+  String _localizeType(BuildContext context, String type) {
+    final t = AppLocalizations.of(context)!;
+    switch (type.toLowerCase()) {
+      case 'planting':
+        return t.activityPlanting;
+      case 'fertilizing':
+        return t.activityFertilizing;
+      case 'irrigation':
+        return t.activityIrrigation;
+      default:
+        return type;
+    }
+  }
+
+  String _localizeCrop(BuildContext context, String crop) {
+    final t = AppLocalizations.of(context)!;
+    switch (crop.toLowerCase()) {
+      case 'rice':
+        return t.cropRice;
+      case 'wheat':
+        return t.cropWheat;
+      case 'maize':
+        return t.cropMaize;
+      default:
+        return crop;
     }
   }
 }

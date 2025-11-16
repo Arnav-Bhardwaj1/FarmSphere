@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/app_providers.dart';
 import 'package:farmsphere/l10n/app_localizations.dart';
 import 'language_selection_screen.dart';
@@ -52,13 +53,27 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Future<void> _navigateToNextScreen() async {
+    // Wait for splash animation and ensure settings are loaded
     await Future.delayed(const Duration(seconds: 3));
+    
+    // Give a moment for async settings to load
+    await Future.delayed(const Duration(milliseconds: 500));
     
     if (mounted) {
       final userState = ref.read(userProvider);
-      final appState = ref.read(appStateProvider);
-
-      if (appState.isFirstLaunch) {
+      
+      // Check SharedPreferences directly to see if user has completed first launch
+      final prefs = await SharedPreferences.getInstance();
+      final isFirstLaunch = prefs.getBool('isFirstLaunch');
+      // Only skip language selection if isFirstLaunch is explicitly false
+      // If it's null (never set) or true, show language selection
+      final hasCompletedFirstLaunch = isFirstLaunch == false;
+      
+      // Show language selection if:
+      // 1. First launch flag is null (never set before)
+      // 2. First launch flag is true
+      // 3. User just logged out (which clears all prefs)
+      if (isFirstLaunch != false) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const LanguageSelectionScreen()),
         );

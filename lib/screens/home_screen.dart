@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../providers/app_providers.dart';
 import '../widgets/feature_card.dart';
 import '../widgets/quick_action_button.dart';
 import '../widgets/weather_card.dart';
 import '../widgets/alert_card.dart';
+import '../widgets/activity_item.dart';
 import '../chatbot.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
@@ -41,6 +43,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final userState = ref.watch(userProvider);
     final weatherState = ref.watch(weatherProvider);
     final marketState = ref.watch(marketPricesProvider);
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +51,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome back,',
+              t.welcomeBack,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white.withOpacity(0.9),
               ),
@@ -91,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Important Alerts',
+                      t.importantAlerts,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -109,7 +112,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               
               // Quick Actions
               Text(
-                'Quick Actions',
+                t.quickActions,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -121,7 +124,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.camera_alt,
-                      label: 'Scan Crop',
+                      label: t.scanCrop,
                       color: Colors.green,
                       onTap: () {
                         Navigator.of(context).push(
@@ -136,11 +139,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.record_voice_over,
-                      label: 'Voice Help',
+                      label: t.voiceHelp,
                       color: Colors.blue,
                       onTap: () {
                         // TODO: Implement voice help
-                        _showComingSoonDialog('Voice Help');
+                        _showComingSoonDialog(t.voiceHelp);
                       },
                     ),
                   ),
@@ -154,7 +157,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.add_circle_outline,
-                      label: 'Log Activity',
+                      label: t.logActivity,
                       color: Colors.orange,
                       onTap: () {
                         Navigator.of(context).push(
@@ -169,18 +172,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.chat,
-                      label: 'AI Assistant',
+                      label: t.aiAssistant,
                       color: const Color(0xFF36946F),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const AIChatbot(
-                              title: 'FarmSphere AI Assistant',
-                              backgroundColor: Color(0xFFF8F9FA),
-                              appBarColor: Color(0xFF36946F),
-                              inputContainerColor: Color(0xFF2D3648),
-                              sendButtonColor: Color(0xFF36946F),
-                              hintText: 'Ask me about farming...',
+                            builder: (context) => AIChatbot(
+                              title: t.chatbotTitle,
+                              backgroundColor: const Color(0xFFF8F9FA),
+                              appBarColor: const Color(0xFF36946F),
+                              inputContainerColor: const Color(0xFF2D3648),
+                              sendButtonColor: const Color(0xFF36946F),
+                              hintText: t.chatbotHint,
                             ),
                           ),
                         );
@@ -197,7 +200,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.people,
-                      label: 'Community',
+                      label: t.community,
                       color: Colors.purple,
                       onTap: () {
                         Navigator.of(context).push(
@@ -212,13 +215,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   Expanded(
                     child: QuickActionButton(
                       icon: Icons.help_outline,
-                      label: 'Help',
+                      label: t.help,
                       color: Colors.grey,
                       onTap: () {
                         // TODO: Implement help screen
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Help feature coming soon!'),
+                          SnackBar(
+                            content: Text(t.helpComingSoon),
                             backgroundColor: Colors.blue,
                           ),
                         );
@@ -232,7 +235,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               
               // Main Features
               Text(
-                'Features',
+                t.features,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -250,8 +253,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   FeatureCard(
                     icon: Icons.camera_alt,
-                    title: 'AI Crop Health',
-                    subtitle: 'Scan and diagnose crop diseases',
+                    title: t.aiCropHealth,
+                    subtitle: t.scanDiagnoseDiseases,
                     color: Colors.green,
                     onTap: () {
                       Navigator.of(context).push(
@@ -263,8 +266,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   FeatureCard(
                     icon: Icons.wb_sunny,
-                    title: 'Weather & Alerts',
-                    subtitle: 'Get weather updates and alerts',
+                    title: t.weatherAlerts,
+                    subtitle: t.getWeatherUpdates,
                     color: Colors.blue,
                     onTap: () {
                       Navigator.of(context).push(
@@ -276,8 +279,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   FeatureCard(
                     icon: Icons.trending_up,
-                    title: 'Market Prices',
-                    subtitle: 'Check crop prices and schemes',
+                    title: t.marketPrices,
+                    subtitle: t.checkPricesSchemes,
                     color: Colors.orange,
                     onTap: () {
                       Navigator.of(context).push(
@@ -289,8 +292,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   FeatureCard(
                     icon: Icons.analytics,
-                    title: 'Analytics',
-                    subtitle: 'Track your farm activities',
+                    title: t.analytics,
+                    subtitle: t.trackActivities,
                     color: Colors.purple,
                     onTap: () {
                       Navigator.of(context).push(
@@ -307,7 +310,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               
               // Recent Activities
               Text(
-                'Recent Activities',
+                t.recentActivities,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -337,14 +340,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'No activities yet',
+                              t.noActivitiesYet,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 color: Colors.grey[600],
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Start logging your farm activities',
+                              t.startLoggingActivities,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Colors.grey[500],
                               ),
@@ -357,23 +360,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   
                   return Column(
                     children: activityState.activities!.take(3).map((activity) {
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                            child: Icon(
-                              _getActivityIcon(activity['type']),
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                          title: Text(activity['type']),
-                          subtitle: Text(activity['crop']),
-                          trailing: Text(
-                            _formatDate(activity['date']),
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ),
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: ActivityItem(activity: activity),
                       );
                     }).toList(),
                   );
@@ -386,47 +375,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
-  IconData _getActivityIcon(String type) {
-    switch (type.toLowerCase()) {
-      case 'planting':
-        return Icons.eco;
-      case 'fertilizing':
-        return Icons.agriculture;
-      case 'irrigation':
-        return Icons.water_drop;
-      case 'harvesting':
-        return Icons.grass;
-      default:
-        return Icons.assignment;
-    }
-  }
-
-  String _formatDate(String dateString) {
+  String _formatDate(String dateString, BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final date = DateTime.parse(dateString);
     final now = DateTime.now();
     final difference = now.difference(date).inDays;
     
     if (difference == 0) {
-      return 'Today';
+      return t.today;
     } else if (difference == 1) {
-      return 'Yesterday';
+      return t.yesterday;
     } else if (difference < 7) {
-      return '$difference days ago';
+      return t.daysAgo(difference);
     } else {
       return '${date.day}/${date.month}/${date.year}';
     }
   }
 
   void _showComingSoonDialog(String feature) {
+    final t = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('$feature Coming Soon'),
-        content: const Text('This feature is under development and will be available soon.'),
+        title: Text('$feature ${t.comingSoon}'),
+        content: Text(t.featureUnderDevelopment),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(t.ok),
           ),
         ],
       ),

@@ -1,6 +1,6 @@
 """
 Plant Disease Recognition API Server
-A lightweight Flask server for hosting the TensorFlow model
+A lightweight Flask server for hosting the TensorFlow model and MongoDB backend
 """
 
 from flask import Flask, request, jsonify
@@ -11,9 +11,23 @@ from PIL import Image
 import io
 import base64
 import os
+import logging
+
+# Import MongoDB modules
+from config import Config
+from database import connect_to_database, check_connection, close_connection
+from api_routes import api as api_blueprint
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.config.from_object(Config)
 CORS(app)
+
+# Register API blueprint
+app.register_blueprint(api_blueprint)
 
 # Global variables
 model = None
@@ -156,11 +170,40 @@ def predict():
 @app.route('/health', methods=['GET'])
 def health():
     """Health check endpoint"""
-    return jsonify({'status': 'ok', 'model_loaded': model is not None})
+    db_status = check_connection()
+    return jsonify({
+        'status': 'ok', 
+        'model_loaded': model is not None,
+        'database_connected': db_status
+    })
+
+@app.route('/api/health', methods=['GET'])
+def api_health():
+    """API health check endpoint"""
+    db_status = check_connection()
+    return jsonify({
+        'status': 'ok',
+        'database_connected': db_status
+    })
 
 if __name__ == '__main__':
-    print("Loading model...")
+    try:
+        # Connect to MongoDB
+        logger.info("Connecting to MongoDB...")
+        connect_to_database()
+        logger.info("MongoDB connected successfully")
+    except Exception as e:
+        logger.warning(f"MongoDB connection failed: {e}")
+        logger.warning("Server will start without database. Some features may not work.")
+    
+    # Load ML model
+    logger.info("Loading ML model...")
     load_model()
-    print("Starting server on http://localhost:5000")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    
+    logger.info("Starting server on http://localhost:5000")
+    try:
+        app.run(host='0.0.0.0', port=5000, debug=True)
+    finally:
+        # Close database connection on shutdown
+        close_connection()
 

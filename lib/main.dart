@@ -29,14 +29,16 @@ class FarmSphereApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appState = ref.watch(appStateProvider);
+    final currentLocale = Locale(appState.selectedLanguage);
 
     return MaterialApp(
+      key: ValueKey(currentLocale.languageCode),
       title: 'FarmSphere',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      locale: Locale(appState.selectedLanguage),
+      locale: currentLocale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: [
         AppLocalizations.delegate,

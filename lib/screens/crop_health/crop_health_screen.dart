@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/diagnosis_result_card.dart';
 import '../../widgets/loading_overlay.dart';
@@ -74,8 +75,8 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
   Future<void> _analyzeCrop() async {
     if (_selectedImage == null && _descriptionController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please provide an image or description'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pleaseProvideImageOrDescription),
           backgroundColor: Colors.orange,
         ),
       );
@@ -93,12 +94,12 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Analysis failed: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.analysisFailed(e.toString())),
+              backgroundColor: Colors.red,
+            ),
+          );
       }
     } finally {
       if (mounted) {
@@ -112,10 +113,11 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
   @override
   Widget build(BuildContext context) {
     final cropHealthState = ref.watch(cropHealthProvider);
+    final t = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Crop Health Scanner'),
+        title: Text(t.aiCropHealthScanner),
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
@@ -147,7 +149,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'How to use',
+                              t.howToUse,
                               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -156,7 +158,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Take a clear photo of the affected plant part or describe the symptoms you\'re observing. Our AI will analyze and provide diagnosis and treatment recommendations.',
+                          t.cropHealthInstructions,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
@@ -168,7 +170,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 
                 // Image Selection
                 Text(
-                  'Upload Image',
+                  t.uploadImage,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -209,11 +211,11 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Expanded(
+                        Expanded(
                         child: OutlinedButton.icon(
                           onPressed: _pickImage,
                           icon: const Icon(Icons.camera_alt),
-                          label: const Text('Retake'),
+                          label: Text(t.retake),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -221,7 +223,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                         child: OutlinedButton.icon(
                           onPressed: _pickImageFromGallery,
                           icon: const Icon(Icons.photo_library),
-                          label: const Text('Gallery'),
+                          label: Text(t.gallery),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -232,7 +234,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                           });
                         },
                         icon: const Icon(Icons.delete),
-                        label: const Text('Remove'),
+                        label: Text(t.remove),
                       ),
                     ],
                   ),
@@ -258,7 +260,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'No image selected',
+                          t.noImageSelected,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -270,13 +272,13 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                             ElevatedButton.icon(
                               onPressed: _pickImage,
                               icon: const Icon(Icons.camera_alt),
-                              label: const Text('Take Photo'),
+                              label: Text(t.takePhoto),
                             ),
                             const SizedBox(width: 12),
                             OutlinedButton.icon(
                               onPressed: _pickImageFromGallery,
                               icon: const Icon(Icons.photo_library),
-                              label: const Text('Gallery'),
+                              label: Text(t.gallery),
                             ),
                           ],
                         ),
@@ -289,7 +291,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 
                 // Description Input
                 Text(
-                  'Or Describe Symptoms',
+                  t.orDescribeSymptoms,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -299,9 +301,9 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 TextField(
                   controller: _descriptionController,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    hintText: 'Describe the symptoms you\'re observing...\n\nExample: "Yellow spots on leaves, wilting, brown edges"',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: t.describeSymptomsHint,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 
@@ -325,7 +327,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                       );
                     },
                     icon: const Icon(Icons.smart_toy),
-                    label: const Text('AI Disease Detection'),
+                    label: Text(t.aiDiseaseDetection),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: const Color(0xFF36946F),
@@ -351,7 +353,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                             ),
                           )
                         : const Icon(Icons.analytics),
-                    label: Text(_isAnalyzing ? 'Analyzing...' : 'Analyze Crop Health'),
+                    label: Text(_isAnalyzing ? t.analyzing : t.analyzeCropHealth),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
@@ -363,7 +365,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 // Results
                 if (cropHealthState.lastDiagnosis != null) ...[
                   Text(
-                    'Analysis Result',
+                    t.analysisResult,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -377,7 +379,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                 // Diagnosis History
                 if (cropHealthState.diagnosisHistory != null && cropHealthState.diagnosisHistory!.isNotEmpty) ...[
                   Text(
-                    'Recent Diagnoses',
+                    t.recentDiagnoses,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -398,8 +400,8 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
           ),
           
           if (_isAnalyzing)
-            const LoadingOverlay(
-              message: 'Analyzing crop health...\nThis may take a few moments',
+            LoadingOverlay(
+              message: AppLocalizations.of(context)!.analyzingCropHealth,
             ),
         ],
       ),
@@ -409,10 +411,11 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
   void _showDiagnosisHistory() {
     final cropHealthState = ref.read(cropHealthProvider);
     
+    final t = AppLocalizations.of(context)!;
     if (cropHealthState.diagnosisHistory == null || cropHealthState.diagnosisHistory!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No diagnosis history available'),
+        SnackBar(
+          content: Text(t.noDiagnosisHistory),
           backgroundColor: Colors.orange,
         ),
       );
@@ -432,7 +435,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Diagnosis History',
+                t.diagnosisHistory,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

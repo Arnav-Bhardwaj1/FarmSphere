@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 
 class ForecastCard extends StatelessWidget {
   final Map<String, dynamic> forecast;
@@ -11,7 +12,7 @@ class ForecastCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = DateTime.parse(forecast['date']);
-    final dayName = _getDayName(date.weekday);
+    final dayName = _getDayName(context, date.weekday);
     final high = forecast['high'];
     final low = forecast['low'];
     final condition = forecast['condition'];
@@ -54,7 +55,7 @@ class ForecastCard extends StatelessWidget {
             ),
             const SizedBox(height: 3),
             Text(
-              condition ?? 'Unknown',
+              _localizeCondition(context, condition),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontSize: 8,
               ),
@@ -118,22 +119,23 @@ class ForecastCard extends StatelessWidget {
     );
   }
 
-  String _getDayName(int weekday) {
+  String _getDayName(BuildContext context, int weekday) {
+    final t = AppLocalizations.of(context)!;
     switch (weekday) {
       case 1:
-        return 'Mon';
+        return t.dayMon;
       case 2:
-        return 'Tue';
+        return t.dayTue;
       case 3:
-        return 'Wed';
+        return t.dayWed;
       case 4:
-        return 'Thu';
+        return t.dayThu;
       case 5:
-        return 'Fri';
+        return t.dayFri;
       case 6:
-        return 'Sat';
+        return t.daySat;
       case 7:
-        return 'Sun';
+        return t.daySun;
       default:
         return '';
     }
@@ -155,6 +157,29 @@ class ForecastCard extends StatelessWidget {
         return Icons.thunderstorm;
       default:
         return Icons.wb_sunny;
+    }
+  }
+
+  String _localizeCondition(BuildContext context, String? condition) {
+    final t = AppLocalizations.of(context)!;
+    final value = (condition ?? '').toString();
+    switch (value.toLowerCase()) {
+      case 'sunny':
+        return t.conditionSunny;
+      case 'partly cloudy':
+        return t.conditionPartlyCloudy;
+      case 'cloudy':
+        return t.conditionCloudy;
+      case 'rainy':
+        return t.conditionRainy;
+      case 'stormy':
+        return t.conditionStormy;
+      case 'haze':
+        return t.conditionHaze;
+      case 'fog':
+        return t.conditionFog;
+      default:
+        return value.isEmpty ? t.conditionUnknown : value;
     }
   }
 }

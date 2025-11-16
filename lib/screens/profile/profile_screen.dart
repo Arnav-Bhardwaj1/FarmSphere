@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../widgets/profile_option_tile.dart';
+import '../auth/login_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -20,7 +21,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text(t.profile),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -54,7 +55,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      userState.name ?? 'Farmer',
+                      userState.name ?? t.profile,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -74,7 +75,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
-                        userState.location ?? 'Location not set',
+                        userState.location ?? t.location,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w500,
@@ -91,8 +92,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             // Profile Options
             ProfileOptionTile(
               icon: Icons.person_outline,
-              title: 'Edit Profile',
-              subtitle: 'Update your personal information',
+              title: t.editProfile,
+              subtitle: t.updatePersonalInfo,
               onTap: () {
                 _showEditProfileDialog();
               },
@@ -100,8 +101,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: Icons.notifications_outlined,
-              title: 'Notifications',
-              subtitle: 'Manage your notification preferences',
+              title: t.notifications,
+              subtitle: t.manageNotifications,
               onTap: () {
                 _showNotificationsDialog();
               },
@@ -110,7 +111,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ProfileOptionTile(
               icon: Icons.language,
               title: t.selectLanguage,
-              subtitle: 'Current: ${_getLanguageName(appState.selectedLanguage)}',
+              subtitle: '${t.language}: ${_getLanguageNameLocalized(context, appState.selectedLanguage)}',
               onTap: () {
                 _showLanguageDialog();
               },
@@ -118,8 +119,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: appState.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-              title: 'Theme',
-              subtitle: appState.isDarkMode ? 'Dark Mode' : 'Light Mode',
+              title: t.theme,
+              subtitle: appState.isDarkMode ? t.darkMode : t.lightMode,
               onTap: () {
                 ref.read(appStateProvider.notifier).toggleDarkMode();
               },
@@ -127,8 +128,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: Icons.help_outline,
-              title: 'Help & Support',
-              subtitle: 'Get help and contact support',
+              title: t.helpSupport,
+              subtitle: t.getHelp,
               onTap: () {
                 _showHelpDialog();
               },
@@ -136,8 +137,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: Icons.info_outline,
-              title: 'About',
-              subtitle: 'App version and information',
+              title: t.about,
+              subtitle: t.appVersion,
               onTap: () {
                 _showAboutDialog();
               },
@@ -166,7 +167,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             // App Info
             Text(
-              'FarmSphere v1.0.0',
+              '${t.appTitle} v1.0.0',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Colors.grey[500],
               ),
@@ -192,16 +193,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     }
   }
 
+  String _getLanguageNameLocalized(BuildContext context, String code) {
+    switch (code) {
+      case 'en':
+        return 'English';
+      case 'hi':
+        return 'हिन्दी';
+      case 'ta':
+        return 'தமிழ்';
+      case 'te':
+        return 'తెలుగు';
+      case 'bn':
+        return 'বাংলা';
+      case 'mr':
+        return 'मराठी';
+      default:
+        return _getLanguageName(code);
+    }
+  }
+
   void _showSettingsDialog() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Settings'),
-        content: const Text('Settings functionality will be available soon.'),
+        title: Text(AppLocalizations.of(context)!.settings),
+        content: Text(AppLocalizations.of(context)!.settingsComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.ok),
           ),
         ],
       ),
@@ -212,12 +232,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit Profile'),
-        content: const Text('Profile editing functionality will be available soon.'),
+        title: Text(AppLocalizations.of(context)!.editProfile),
+        content: Text(AppLocalizations.of(context)!.editProfileComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.ok),
           ),
         ],
       ),
@@ -228,12 +248,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Notifications'),
-        content: const Text('Notification settings will be available soon.'),
+        title: Text(AppLocalizations.of(context)!.notifications),
+        content: Text(AppLocalizations.of(context)!.notificationsComingSoon),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.ok),
           ),
         ],
       ),
@@ -271,22 +291,37 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalizations.of(context)!.selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: languages.map((lang) {
-            return ListTile(
-              title: Text(lang['name']!),
-              onTap: () {
-                ref.read(appStateProvider.notifier).setLanguage(lang['code']!);
-                Navigator.of(context).pop();
-                final t = AppLocalizations.of(context)!;
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(t.changeLanguageSuccess(lang['name']!)),
-                  backgroundColor: Colors.green,
-                ));
-              },
-            );
-          }).toList(),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6,
+            ),
+            child: Scrollbar(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: languages.length,
+                itemBuilder: (context, index) {
+                  final lang = languages[index];
+                  return ListTile(
+                    title: Text(lang['name']!),
+                    onTap: () async {
+                      await ref.read(appStateProvider.notifier).setLanguage(lang['code']!);
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        // Note: MaterialApp will rebuild automatically due to the key we set in main.dart
+                        // The app UI will update to reflect the new language
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Language changed to ${lang['name']}'),
+                          backgroundColor: Colors.green,
+                        ));
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
         ),
         actions: [
           TextButton(
@@ -302,23 +337,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Help & Support'),
-        content: const Column(
+        title: Text(AppLocalizations.of(context)!.helpSupport),
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('For support, please contact:'),
+            Text(AppLocalizations.of(context)!.helpContent),
             SizedBox(height: 8),
-            Text('Email: support@farmsphere.com'),
-            Text('Phone: +91 9876543210'),
+            Text(AppLocalizations.of(context)!.helpEmail),
+            Text(AppLocalizations.of(context)!.helpPhone),
             SizedBox(height: 16),
-            Text('Or visit our website: www.farmsphere.com'),
+            Text(AppLocalizations.of(context)!.helpWebsite),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
+            child: Text(AppLocalizations.of(context)!.ok),
           ),
         ],
       ),
@@ -328,7 +363,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   void _showAboutDialog() {
     showAboutDialog(
       context: context,
-      applicationName: 'FarmSphere',
+      applicationName: AppLocalizations.of(context)!.appTitle,
       applicationVersion: '1.0.0',
       applicationIcon: Icon(
         Icons.agriculture,
@@ -336,41 +371,47 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         color: Theme.of(context).colorScheme.primary,
       ),
       children: [
-        const Text('An AI-Powered Farming Assistant'),
+        Text(AppLocalizations.of(context)!.aboutContent),
         const SizedBox(height: 16),
-        const Text('Features:'),
-        const Text('• AI Crop Health Scanner'),
-        const Text('• Weather & Alerts'),
-        const Text('• Market Prices & Schemes'),
-        const Text('• Voice & Local Language Support'),
-        const Text('• Activity Logging & Analytics'),
-        const Text('• Farmer Community Platform'),
+        Text(AppLocalizations.of(context)!.aboutFeatures),
+        Text('• ${AppLocalizations.of(context)!.feature_ai_scanner}'),
+        Text('• ${AppLocalizations.of(context)!.feature_weather}'),
+        Text('• ${AppLocalizations.of(context)!.feature_market}'),
+        Text('• ${AppLocalizations.of(context)!.feature_voice_local}'),
+        Text('• ${AppLocalizations.of(context)!.feature_activity}'),
+        Text('• ${AppLocalizations.of(context)!.feature_community}'),
       ],
     );
   }
 
   void _showLogoutDialog() {
+    final t = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+        title: Text(t.logoutConfirmTitle),
+        content: Text(t.logoutConfirmBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(t.cancel),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
-              ref.read(userProvider.notifier).logout();
-              Navigator.of(context).pushReplacementNamed('/login');
+              await ref.read(userProvider.notifier).logout();
+              if (context.mounted) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (route) => false,
+                );
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Logout'),
+            child: Text(t.logout),
           ),
         ],
       ),

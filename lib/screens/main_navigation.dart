@@ -33,42 +33,42 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
   List<NavigationItem> _buildNavigationItems(BuildContext context) {
     final t = AppLocalizations.of(context)!;
     return [
-      NavigationItem(
-        icon: Icons.home,
-        activeIcon: Icons.home,
+    NavigationItem(
+      icon: Icons.home,
+      activeIcon: Icons.home,
         label: t.navHome,
-      ),
-      NavigationItem(
-        icon: Icons.camera_alt_outlined,
-        activeIcon: Icons.camera_alt,
+    ),
+    NavigationItem(
+      icon: Icons.camera_alt_outlined,
+      activeIcon: Icons.camera_alt,
         label: t.navCropHealth,
-      ),
-      NavigationItem(
-        icon: Icons.wb_sunny_outlined,
-        activeIcon: Icons.wb_sunny,
+    ),
+    NavigationItem(
+      icon: Icons.wb_sunny_outlined,
+      activeIcon: Icons.wb_sunny,
         label: t.navWeather,
-      ),
-      NavigationItem(
-        icon: Icons.trending_up_outlined,
-        activeIcon: Icons.trending_up,
+    ),
+    NavigationItem(
+      icon: Icons.trending_up_outlined,
+      activeIcon: Icons.trending_up,
         label: t.navMarket,
-      ),
-      NavigationItem(
-        icon: Icons.analytics_outlined,
-        activeIcon: Icons.analytics,
+    ),
+    NavigationItem(
+      icon: Icons.analytics_outlined,
+      activeIcon: Icons.analytics,
         label: t.navActivities,
-      ),
-      NavigationItem(
-        icon: Icons.people_outline,
-        activeIcon: Icons.people,
+    ),
+    NavigationItem(
+      icon: Icons.people_outline,
+      activeIcon: Icons.people,
         label: t.navCommunity,
-      ),
-      NavigationItem(
-        icon: Icons.person_outline,
-        activeIcon: Icons.person,
+    ),
+    NavigationItem(
+      icon: Icons.person_outline,
+      activeIcon: Icons.person,
         label: t.navProfile,
-      ),
-    ];
+    ),
+  ];
   }
 
   @override

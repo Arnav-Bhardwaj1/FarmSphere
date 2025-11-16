@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import '../../providers/app_providers.dart';
 
 class AddActivityScreen extends ConsumerStatefulWidget {
@@ -60,19 +61,21 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
         );
 
         if (mounted) {
+          final t = AppLocalizations.of(context)!;
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Activity added successfully'),
+            SnackBar(
+              content: Text(t.activityAddedSuccess),
               backgroundColor: Colors.green,
             ),
           );
         }
       } catch (e) {
         if (mounted) {
+          final t = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Failed to add activity: ${e.toString()}'),
+              content: Text(t.failedToAddActivity(e.toString())),
               backgroundColor: Colors.red,
             ),
           );
@@ -89,9 +92,10 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Activity'),
+        title: Text(t.addActivityTitle),
         actions: [
           TextButton(
             onPressed: _isLoading ? null : _submitActivity,
@@ -104,9 +108,9 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   )
-                : const Text(
-                    'Save',
-                    style: TextStyle(color: Colors.white),
+                : Text(
+                    t.save,
+                    style: const TextStyle(color: Colors.white),
                   ),
           ),
         ],
@@ -120,7 +124,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
             children: [
               // Activity Type
               Text(
-                'Activity Type',
+                t.activityType,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -128,9 +132,9 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 initialValue: _selectedType,
-                decoration: const InputDecoration(
-                  hintText: 'Select activity type',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: t.selectActivityType,
+                  border: const OutlineInputBorder(),
                 ),
                 items: _activityTypes.map((type) {
                   return DropdownMenuItem(
@@ -145,7 +149,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select an activity type';
+                    return t.pleaseSelectActivityType;
                   }
                   return null;
                 },
@@ -155,7 +159,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               
               // Crop
               Text(
-                'Crop',
+                t.crop,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -163,9 +167,9 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
                 initialValue: _selectedCrop,
-                decoration: const InputDecoration(
-                  hintText: 'Select crop',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: t.selectCrop,
+                  border: const OutlineInputBorder(),
                 ),
                 items: _crops.map((crop) {
                   return DropdownMenuItem(
@@ -180,7 +184,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select a crop';
+                    return t.pleaseSelectCrop;
                   }
                   return null;
                 },
@@ -190,7 +194,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               
               // Notes
               Text(
-                'Notes (Optional)',
+                t.notesOptional,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -199,9 +203,9 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
               TextFormField(
                 controller: _notesController,
                 maxLines: 4,
-                decoration: const InputDecoration(
-                  hintText: 'Add any additional notes about this activity...',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: t.addNotesHint,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               
@@ -222,7 +226,7 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Quick Tips',
+                            t.quickTips,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
@@ -230,17 +234,17 @@ class _AddActivityScreenState extends ConsumerState<AddActivityScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const _TipItem(
-                        text: 'Be specific about the activity performed',
+                      _TipItem(
+                        text: t.tipBeSpecific,
                       ),
-                      const _TipItem(
-                        text: 'Include quantities, measurements, or time spent',
+                      _TipItem(
+                        text: t.tipIncludeQuantities,
                       ),
-                      const _TipItem(
-                        text: 'Note weather conditions if relevant',
+                      _TipItem(
+                        text: t.tipNoteWeather,
                       ),
-                      const _TipItem(
-                        text: 'Add photos if possible for better tracking',
+                      _TipItem(
+                        text: t.tipAddPhotos,
                       ),
                     ],
                   ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
+import '../utils/localization_helpers.dart';
 
 class PriceCard extends StatelessWidget {
   final Map<String, dynamic> price;
@@ -10,6 +12,7 @@ class PriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final crop = price['crop'] ?? 'Unknown';
     final priceValue = price['price'] ?? price['mspPrice'] ?? 0;
     final unit = price['unit'] ?? '';
@@ -62,7 +65,7 @@ class PriceCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            crop,
+                            LocalizationHelpers.getLocalizedCropName(t, crop),
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
@@ -89,7 +92,7 @@ class PriceCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        isMSP ? 'Government MSP' : market,
+                        isMSP ? t.governmentMSP : market,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -140,11 +143,11 @@ class PriceCard extends StatelessWidget {
                 runSpacing: 4,
                 children: [
                   if (season.isNotEmpty)
-                    _buildDetailChip(context, 'Season', season, Icons.calendar_today),
+                    _buildDetailChip(context, t.labelSeason, LocalizationHelpers.getLocalizedSeason(t, season), Icons.calendar_today),
                   if (category.isNotEmpty)
-                    _buildDetailChip(context, 'Category', category, Icons.category),
+                    _buildDetailChip(context, t.labelCategory, LocalizationHelpers.getLocalizedCategory(t, category), Icons.category),
                   if (variety.isNotEmpty)
-                    _buildDetailChip(context, 'Variety', variety, Icons.local_florist),
+                    _buildDetailChip(context, t.labelVariety, variety, Icons.local_florist),
                 ],
               ),
             ],
@@ -161,7 +164,7 @@ class PriceCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Arrival: ${_formatDate(arrival)}',
+                    '${t.labelArrival}: ${_formatDate(arrival)}',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.grey[600],
                       fontSize: 11,

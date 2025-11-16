@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:farmsphere/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../utils/localization_helpers.dart';
 
 class SchemeCard extends StatelessWidget {
   final Map<String, dynamic> scheme;
@@ -11,10 +13,11 @@ class SchemeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final title = scheme['title'] ?? 'Unknown Scheme';
     final description = scheme['description'] ?? '';
     final eligibility = scheme['eligibility'] ?? '';
-    final status = scheme['status'] ?? 'Unknown';
+    final status = LocalizationHelpers.getLocalizedStatus(t, scheme['status'] ?? 'Unknown');
 
     return Card(
       elevation: 2,
@@ -98,9 +101,9 @@ class SchemeCard extends StatelessWidget {
                     color: Colors.green[600],
                   ),
                   const SizedBox(width: 8),
-                  Expanded(
+                      Expanded(
                     child: Text(
-                      'Eligibility: $eligibility',
+                      '${t.eligibility}: $eligibility',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey[700],
                       ),
@@ -120,7 +123,7 @@ class SchemeCard extends StatelessWidget {
                   _showSchemeDetails(context, scheme);
                 },
                 icon: const Icon(Icons.info_outline),
-                label: const Text('Learn More'),
+                label: Text(t.learnMore),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   side: BorderSide(
@@ -151,16 +154,18 @@ class SchemeCard extends StatelessWidget {
   void _showSchemeDetails(BuildContext context, Map<String, dynamic> scheme) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(scheme['title'] ?? 'Scheme Details'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (scheme['description'] != null) ...[
+      builder: (context) {
+        final t = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(scheme['title'] ?? t.schemeDetails),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (scheme['description'] != null) ...[
                 Text(
-                  'Description',
+                  t.description,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -171,7 +176,7 @@ class SchemeCard extends StatelessWidget {
               ],
               if (scheme['eligibility'] != null) ...[
                 Text(
-                  'Eligibility',
+                  t.eligibility,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -182,7 +187,7 @@ class SchemeCard extends StatelessWidget {
               ],
               if (scheme['benefit'] != null) ...[
                 Text(
-                  'Benefits',
+                  t.benefits,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -193,7 +198,7 @@ class SchemeCard extends StatelessWidget {
               ],
               if (scheme['applicationProcess'] != null) ...[
                 Text(
-                  'How to Apply',
+                  t.howToApply,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -204,7 +209,7 @@ class SchemeCard extends StatelessWidget {
               ],
               if (scheme['website'] != null) ...[
                 Text(
-                  'Official Website',
+                  t.officialWebsite,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -224,30 +229,31 @@ class SchemeCard extends StatelessWidget {
               ],
               if (scheme['status'] != null) ...[
                 Text(
-                  'Status',
+                  t.status,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(scheme['status']),
+                Text(LocalizationHelpers.getLocalizedStatus(t, scheme['status'])),
               ],
             ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-          if (scheme['website'] != null)
-            ElevatedButton.icon(
-              onPressed: () => _launchURL(scheme['website']),
-              icon: const Icon(Icons.open_in_new),
-              label: const Text('Visit Website'),
             ),
-        ],
-      ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(t.close),
+            ),
+            if (scheme['website'] != null)
+              ElevatedButton.icon(
+                onPressed: () => _launchURL(scheme['website']),
+                icon: const Icon(Icons.open_in_new),
+                label: Text(t.visitWebsite),
+              ),
+          ],
+        );
+      },
     );
   }
 
