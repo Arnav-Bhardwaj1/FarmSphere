@@ -129,7 +129,7 @@ class _AIChatbotState extends State<AIChatbot> {
     // Initialize Text-to-Speech
     final ttsLanguage = _getTTSLanguageCode();
     await _flutterTts.setLanguage(ttsLanguage);
-    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setSpeechRate(1.0);
     await _flutterTts.setVolume(1.0);
     await _flutterTts.setPitch(1.0);
     

@@ -128,6 +128,7 @@
   "addActivity": "गतिविधि जोड़ें",
   "productivityOverview": "उत्पादकता अवलोकन",
   "overallProductivity": "समग्र उत्पादकता",
+  "overallProductivityLabel": "समग्र उत्पादकता",
   "cropDistribution": "फसल वितरण",
   "activityTips": "गतिविधि युक्तियां",
   "regularLogging": "नियमित लॉगिंग",
@@ -308,7 +309,39 @@
   "listening": "सुन रहे हैं...",
   "tapToSpeak": "बोलने के लिए माइक्रोफ़ोन पर टैप करें",
   "speaking": "बोल रहे हैं...",
-  "tapToStop": "रोकने के लिए टैप करें"
+  "tapToStop": "रोकने के लिए टैप करें",
+  "postContent": "पोस्ट सामग्री",
+  "postContentHint": "अपने खेती के अनुभव साझा करें, प्रश्न पूछें, या अन्य किसानों की मदद करें...",
+  "tags": "टैग",
+  "tagsHint": "टैग जोड़ें (उदाहरण: गेहूँ, फसल, रोग) - अल्पविराम से अलग करें",
+  "postCreatedSuccess": "पोस्ट सफलतापूर्वक बनाई गई!",
+  "pleaseEnterContent": "कृपया पोस्ट सामग्री दर्ज करें",
+  "addComment": "टिप्पणी जोड़ें",
+  "commentHint": "एक टिप्पणी लिखें...",
+  "comment": "टिप्पणी",
+  "comments": "टिप्पणियां",
+  "like": "पसंद",
+  "unlike": "पसंद हटाएं",
+  "liked": "पसंद किया",
+  "postSaved": "पोस्ट सहेजी गई",
+  "postUnsaved": "पोस्ट सहेजे गए से हटा दी गई",
+  "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी किया गया",
+  "userBlocked": "उपयोगकर्ता सफलतापूर्वक अवरुद्ध किया गया",
+  "postReported": "पोस्ट रिपोर्ट की गई। समुदाय को सुरक्षित रखने के लिए धन्यवाद।",
+  "sendMessage": "संदेश भेजें",
+  "messageHint": "अपना संदेश टाइप करें...",
+  "noCommentsYet": "अभी तक कोई टिप्पणी नहीं। पहली टिप्पणी करने वाले बनें!",
+  "consultationStarted": "{expertName} के साथ परामर्श शुरू हुआ",
+  "@consultationStarted": {
+    "placeholders": {
+      "expertName": {
+        "type": "String"
+      }
+    }
+  },
+  "typeYourMessage": "अपना संदेश यहाँ टाइप करें...",
+  "noMessagesYet": "अभी तक कोई संदेश नहीं। बातचीत शुरू करें!",
+  "postDeleted": "पोस्ट सफलतापूर्वक हटाई गई"
 }
 
 

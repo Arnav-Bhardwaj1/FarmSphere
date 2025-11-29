@@ -621,6 +621,11 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
     final chatId = chat['id'];
     final messageController = TextEditingController();
     
+    // Load messages from API when opening chat
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(communityProvider.notifier).loadChatMessages(chatId);
+    });
+    
     showDialog(
       context: context,
       builder: (dialogContext) => Consumer(
@@ -710,9 +715,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                               border: const OutlineInputBorder(),
                               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             ),
-                            onSubmitted: (text) {
+                            onSubmitted: (text) async {
                               if (text.trim().isNotEmpty) {
-                                ref.read(communityProvider.notifier).addChatMessage(
+                                await ref.read(communityProvider.notifier).addChatMessage(
                                   chatId,
                                   userId,
                                   userName,
@@ -725,10 +730,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                         ),
                         IconButton(
                           icon: const Icon(Icons.send),
-                          onPressed: () {
+                          onPressed: () async {
                             final text = messageController.text.trim();
                             if (text.isNotEmpty) {
-                              ref.read(communityProvider.notifier).addChatMessage(
+                              await ref.read(communityProvider.notifier).addChatMessage(
                                 chatId,
                                 userId,
                                 userName,

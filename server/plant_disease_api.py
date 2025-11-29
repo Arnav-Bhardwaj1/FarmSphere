@@ -202,7 +202,7 @@ if __name__ == '__main__':
     
     logger.info("Starting server on http://localhost:5000")
     try:
-        app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
     finally:
         # Close database connection on shutdown
         close_connection()

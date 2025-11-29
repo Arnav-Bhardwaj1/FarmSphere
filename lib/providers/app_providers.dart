@@ -1145,11 +1145,64 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
     );
   }
 
-  void addChatMessage(String chatId, String userId, String? userName, String content) {
+  Future<void> addChatMessage(String chatId, String userId, String? userName, String content) async {
+    final messageId = DateTime.now().millisecondsSinceEpoch.toString();
+    
+    // Try to save to backend
+    try {
+      final isApiAvailable = await ApiService.checkHealth();
+      if (isApiAvailable) {
+        try {
+          final createdMessage = await ApiService.createChatMessage(
+            messageId: messageId,
+            chatId: chatId,
+            userId: userId,
+            userName: userName ?? 'User',
+            content: content,
+          );
+          
+          // Update local state with created message
+          final messages = Map<String, List<Map<String, dynamic>>>.from(state.chatMessages);
+          final formattedMessage = {
+            ...createdMessage,
+            'time': DateTime.now().toIso8601String(),
+          };
+          
+          final chatMessages = List<Map<String, dynamic>>.from(messages[chatId] ?? []);
+          chatMessages.add(formattedMessage);
+          messages[chatId] = chatMessages;
+          
+          // Update chat last message
+          final chats = List<Map<String, dynamic>>.from(state.chats);
+          final chatIndex = chats.indexWhere((c) => c['id'] == chatId);
+          if (chatIndex != -1) {
+            chats[chatIndex] = Map<String, dynamic>.from(chats[chatIndex])
+              ..['lastMessage'] = content
+              ..['time'] = 'Just now';
+          }
+          
+          state = state.copyWith(
+            chats: chats,
+            chatMessages: messages,
+          );
+          return;
+        } catch (e) {
+          if (kDebugMode) {
+            print('Failed to create chat message in API: $e');
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error checking API availability: $e');
+      }
+    }
+    
+    // Fallback to local state
     final messages = Map<String, List<Map<String, dynamic>>>.from(state.chatMessages);
     
     final newMessage = {
-      'id': DateTime.now().millisecondsSinceEpoch.toString(),
+      'id': messageId,
       'userId': userId,
       'userName': userName ?? 'User',
       'content': content,
@@ -1174,6 +1227,44 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
       chats: chats,
       chatMessages: messages,
     );
+  }
+
+  Future<void> loadChatMessages(String chatId) async {
+    // Try to load from API
+    try {
+      final isApiAvailable = await ApiService.checkHealth();
+      if (isApiAvailable) {
+        try {
+          final messages = await ApiService.getChatMessages(chatId: chatId);
+          
+          // Format messages for UI
+          final formattedMessages = messages.map((msg) {
+            final timestamp = msg['timestamp'] ?? msg['createdAt'];
+            return {
+              ...msg,
+              'time': timestamp,
+            };
+          }).toList();
+          
+          // Update local state
+          final chatMessages = Map<String, List<Map<String, dynamic>>>.from(state.chatMessages);
+          chatMessages[chatId] = formattedMessages;
+          
+          state = state.copyWith(chatMessages: chatMessages);
+          return;
+        } catch (e) {
+          if (kDebugMode) {
+            print('Failed to load chat messages from API: $e');
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error checking API availability: $e');
+      }
+    }
+    
+    // If API fails, keep existing local messages
   }
 
   void blockUser(String userId) {
