@@ -424,7 +424,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get productivityOverview => 'उत्पादकता अवलोकन';
 
   @override
-  String get overallProductivityLabel => 'Overall Productivity';
+  String get overallProductivityLabel => 'समग्र उत्पादकता';
 
   @override
   String get cropDistribution => 'फसल वितरण';
@@ -979,82 +979,247 @@ class AppLocalizationsHi extends AppLocalizations {
   String get schemeUpcoming => 'आगामी';
 
   @override
-  String get postContent => 'Post Content';
+  String get postContent => 'पोस्ट सामग्री';
 
   @override
   String get postContentHint =>
-      'Share your farming experience, ask questions, or help other farmers...';
+      'अपने खेती के अनुभव साझा करें, प्रश्न पूछें, या अन्य किसानों की मदद करें...';
 
   @override
-  String get tags => 'Tags';
+  String get tags => 'टैग';
 
   @override
   String get tagsHint =>
-      'Add tags (e.g., Wheat, Harvest, Disease) - separate with commas';
+      'टैग जोड़ें (उदाहरण: गेहूँ, फसल, रोग) - अल्पविराम से अलग करें';
 
   @override
-  String get postCreatedSuccess => 'Post created successfully!';
+  String get postCreatedSuccess => 'पोस्ट सफलतापूर्वक बनाई गई!';
 
   @override
-  String get pleaseEnterContent => 'Please enter post content';
+  String get pleaseEnterContent => 'कृपया पोस्ट सामग्री दर्ज करें';
 
   @override
-  String get addComment => 'Add Comment';
+  String get addComment => 'टिप्पणी जोड़ें';
 
   @override
-  String get commentHint => 'Write a comment...';
+  String get commentHint => 'एक टिप्पणी लिखें...';
 
   @override
-  String get comment => 'Comment';
+  String get comment => 'टिप्पणी';
 
   @override
-  String get comments => 'Comments';
+  String get comments => 'टिप्पणियां';
 
   @override
-  String get like => 'Like';
+  String get like => 'पसंद';
 
   @override
-  String get unlike => 'Unlike';
+  String get unlike => 'पसंद हटाएं';
 
   @override
-  String get liked => 'Liked';
+  String get liked => 'पसंद किया';
 
   @override
-  String get postSaved => 'Post saved';
+  String get postSaved => 'पोस्ट सहेजी गई';
 
   @override
-  String get postUnsaved => 'Post removed from saved';
+  String get postUnsaved => 'पोस्ट सहेजे गए से हटा दी गई';
 
   @override
-  String get linkCopied => 'Link copied to clipboard';
+  String get linkCopied => 'लिंक क्लिपबोर्ड पर कॉपी किया गया';
 
   @override
-  String get userBlocked => 'User blocked successfully';
+  String get userBlocked => 'उपयोगकर्ता सफलतापूर्वक अवरुद्ध किया गया';
 
   @override
   String get postReported =>
-      'Post reported. Thank you for keeping the community safe.';
+      'पोस्ट रिपोर्ट की गई। समुदाय को सुरक्षित रखने के लिए धन्यवाद।';
 
   @override
-  String get sendMessage => 'Send Message';
+  String get sendMessage => 'संदेश भेजें';
 
   @override
-  String get messageHint => 'Type your message...';
+  String get messageHint => 'अपना संदेश टाइप करें...';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+  String get noCommentsYet =>
+      'अभी तक कोई टिप्पणी नहीं। पहली टिप्पणी करने वाले बनें!';
 
   @override
   String consultationStarted(String expertName) {
-    return 'Consultation started with $expertName';
+    return '$expertName के साथ परामर्श शुरू हुआ';
   }
 
   @override
-  String get typeYourMessage => 'Type your message here...';
+  String get typeYourMessage => 'अपना संदेश यहाँ टाइप करें...';
 
   @override
-  String get noMessagesYet => 'No messages yet. Start the conversation!';
+  String get noMessagesYet => 'अभी तक कोई संदेश नहीं। बातचीत शुरू करें!';
 
   @override
-  String get postDeleted => 'Post deleted successfully';
+  String get postDeleted => 'पोस्ट सफलतापूर्वक हटाई गई';
+
+  @override
+  String get emailRequired => 'ईमेल आवश्यक है';
+
+  @override
+  String get emailInvalid => 'कृपया एक वैध ईमेल पता दर्ज करें';
+
+  @override
+  String get passwordRequired => 'पासवर्ड आवश्यक है';
+
+  @override
+  String get passwordTooShort => 'पासवर्ड कम से कम 6 अक्षर का होना चाहिए';
+
+  @override
+  String get phoneRequired => 'फोन नंबर आवश्यक है';
+
+  @override
+  String get phoneTooShort => 'फोन नंबर कम से कम 10 अंकों का होना चाहिए';
+
+  @override
+  String get locationRequired => 'स्थान आवश्यक है';
+
+  @override
+  String get agentDashboard => 'एआई एजेंट';
+
+  @override
+  String get agentSettings => 'एजेंट सेटिंग्स';
+
+  @override
+  String get agentInsights => 'एआई अंतर्दृष्टि';
+
+  @override
+  String get agentRecommendations => 'सिफारिशें';
+
+  @override
+  String get agentStatistics => 'आंकड़े';
+
+  @override
+  String get agentStatus => 'स्थिति';
+
+  @override
+  String get agentEnabled => 'सक्षम';
+
+  @override
+  String get agentDisabled => 'अक्षम';
+
+  @override
+  String get toggleAgent => 'एजेंट टॉगल करें';
+
+  @override
+  String get runAgentsNow => 'अभी विश्लेषण चलाएं';
+
+  @override
+  String get checkNotifications => 'सूचनाएं जांचें';
+
+  @override
+  String get testNotification => 'परीक्षण सूचना भेजें';
+
+  @override
+  String get agentWeather => 'मौसम बुद्धिमत्ता';
+
+  @override
+  String get agentCropHealth => 'फसल स्वास्थ्य निगरानी';
+
+  @override
+  String get agentActivity => 'गतिविधि अनुसूचक';
+
+  @override
+  String get agentMarket => 'बाजार बुद्धिमत्ता';
+
+  @override
+  String get agentResource => 'संसाधन अनुकूलक';
+
+  @override
+  String get agentDescription => 'एआई-संचालित खेती सहायक';
+
+  @override
+  String get weatherAgentDesc =>
+      'मौसम की निगरानी करता है और चेतावनी प्रदान करता है';
+
+  @override
+  String get cropHealthAgentDesc => 'फसल स्वास्थ्य पैटर्न ट्रैक करता है';
+
+  @override
+  String get activityAgentDesc =>
+      'खेती के कार्यों को अनुसूचित और याद दिलाता है';
+
+  @override
+  String get marketAgentDesc => 'बाजार रुझानों और कीमतों का विश्लेषण करता है';
+
+  @override
+  String get resourceAgentDesc => 'पानी और उर्वरक उपयोग को अनुकूलित करता है';
+
+  @override
+  String get acknowledge => 'स्वीकार करें';
+
+  @override
+  String get dismiss => 'खारिज करें';
+
+  @override
+  String get viewDetails => 'विवरण देखें';
+
+  @override
+  String get priority => 'प्राथमिकता';
+
+  @override
+  String get priorityLow => 'कम';
+
+  @override
+  String get priorityMedium => 'मध्यम';
+
+  @override
+  String get priorityHigh => 'उच्च';
+
+  @override
+  String get priorityCritical => 'गंभीर';
+
+  @override
+  String get createdAt => 'बनाया गया';
+
+  @override
+  String get expiresAt => 'समाप्त होता है';
+
+  @override
+  String get noInsightsYet =>
+      'अभी तक कोई अंतर्दृष्टि नहीं। एआई एजेंट आपके खेत के डेटा का विश्लेषण कर रहे हैं।';
+
+  @override
+  String get noRecommendationsYet =>
+      'अभी तक कोई सिफारिश नहीं। व्यक्तिगत अंतर्दृष्टि के लिए ऐप का उपयोग जारी रखें।';
+
+  @override
+  String get agentAnalyzing => 'विश्लेषण कर रहा है...';
+
+  @override
+  String get agentReady => 'तैयार';
+
+  @override
+  String get generalSettings => 'सामान्य सेटिंग्स';
+
+  @override
+  String get enableNotifications => 'सूचनाएं सक्षम करें';
+
+  @override
+  String get enableAgents => 'एआई एजेंट सक्षम करें';
+
+  @override
+  String get agentManagement => 'एजेंट प्रबंधन';
+
+  @override
+  String get advancedSettings => 'उन्नत सेटिंग्स';
+
+  @override
+  String get dataRetention => 'डेटा प्रतिधारण';
+
+  @override
+  String get clearAgentData => 'सभी एजेंट डेटा साफ़ करें';
+
+  @override
+  String get clearAgentDataWarning =>
+      'यह सभी एआई अंतर्दृष्टि, सिफारिशें और ऐतिहासिक डेटा हटा देगा। यह क्रिया पूर्ववत नहीं की जा सकती।';
+
+  @override
+  String get dataCleared => 'एजेंट डेटा सफलतापूर्वक साफ़ किया गया';
 }

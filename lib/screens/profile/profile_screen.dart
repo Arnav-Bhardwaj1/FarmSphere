@@ -109,6 +109,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             
             ProfileOptionTile(
+              icon: Icons.smart_toy,
+              title: 'AI Agents',
+              subtitle: 'Manage your AI farming assistants',
+              onTap: () {
+                Navigator.pushNamed(context, '/agent-settings');
+              },
+            ),
+            
+            ProfileOptionTile(
               icon: Icons.language,
               title: t.selectLanguage,
               subtitle: '${t.language}: ${_getLanguageNameLocalized(context, appState.selectedLanguage)}',
@@ -261,7 +270,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   void _showLanguageDialog() {
-    final languages = const [
+    const languages = [
       {'code': 'en', 'name': 'English'},
       {'code': 'hi', 'name': 'हिन्दी'},
       {'code': 'bn', 'name': 'বাংলা'},
@@ -343,10 +352,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(AppLocalizations.of(context)!.helpContent),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(AppLocalizations.of(context)!.helpEmail),
             Text(AppLocalizations.of(context)!.helpPhone),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(AppLocalizations.of(context)!.helpWebsite),
           ],
         ),

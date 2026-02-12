@@ -7,6 +7,7 @@ import '../widgets/quick_action_button.dart';
 import '../widgets/weather_card.dart';
 import '../widgets/alert_card.dart';
 import '../widgets/activity_item.dart';
+import '../widgets/agent_insight_card.dart';
 import '../chatbot.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
@@ -43,6 +44,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final userState = ref.watch(userProvider);
     final weatherState = ref.watch(weatherProvider);
     final marketState = ref.watch(marketPricesProvider);
+    final agentState = ref.watch(agentProvider);
+    final agentNotifier = ref.read(agentProvider.notifier);
     final t = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -66,11 +69,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {
-              // TODO: Show notifications
-            },
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.smart_toy_outlined),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/agents');
+                },
+                tooltip: 'AI Agents',
+              ),
+              if (agentState.unacknowledgedDecisions.isNotEmpty)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      '${agentState.unacknowledgedDecisions.length}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -87,6 +120,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 WeatherCard(weather: weatherState.currentWeather!),
               
               const SizedBox(height: 16),
+              
+              // AI Agent Insights Section
+              if (agentState.activeInsights.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.lightbulb,
+                              size: 20,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'AI Recommendations',
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(context, '/agents'),
+                          child: const Text('View All'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    ...agentState.activeInsights.take(2).map((insight) {
+                      return CompactAgentInsightCard(
+                        insight: insight,
+                        onTap: () => Navigator.pushNamed(context, '/agents'),
+                        onDismiss: () => agentNotifier.dismissInsight(insight.id),
+                      );
+                    }),
+                    const SizedBox(height: 16),
+                  ],
+                ),
               
               // Alerts Section
               if (weatherState.alerts != null && weatherState.alerts!.isNotEmpty)

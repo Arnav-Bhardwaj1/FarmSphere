@@ -221,7 +221,7 @@ class _AIChatbotState extends State<AIChatbot> {
   /// Translate arbitrary text to the selected target language using the model
   Future<String> _translateToTarget(String text) async {
     try {
-      final prompt = 'Translate the following text to language with code: ${_targetLangCode}. '
+      final prompt = 'Translate the following text to language with code: $_targetLangCode. '
           'Return ONLY the translated text without quotes.\n\nText: $text';
       final res = await model.generateContent([Content.text(prompt)]);
       final out = res.text?.trim();
@@ -345,7 +345,7 @@ class _AIChatbotState extends State<AIChatbot> {
       }
       
       // Determine if we should use a specific locale or system default
-      final useSpecificLocale = finalLocaleId != null && finalLocaleId.isNotEmpty;
+      final useSpecificLocale = finalLocaleId.isNotEmpty;
       
       if (!useSpecificLocale) {
         print('Failed to determine locale, trying system default');
@@ -411,7 +411,7 @@ class _AIChatbotState extends State<AIChatbot> {
       // Start listening with appropriate locale
       bool? started;
       try {
-        if (useSpecificLocale && finalLocaleId != null) {
+        if (useSpecificLocale) {
           started = await _speech.listen(
             onResult: onSpeechResult,
             listenFor: const Duration(seconds: 30),
@@ -805,7 +805,7 @@ class _AIChatbotState extends State<AIChatbot> {
                         ),
               child: Row(
                 children: [
-                            SizedBox(
+                            const SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(

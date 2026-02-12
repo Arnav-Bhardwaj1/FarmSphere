@@ -3,7 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../services/weather_service.dart';
 import '../services/msp_service.dart';
 import '../services/api_service.dart';
+import '../services/agent_database.dart';
+import '../services/background_task_service.dart';
+import '../services/agent_notification_service.dart';
 import 'package:flutter/foundation.dart';
+
+// Export agent provider for easy access
+export 'agent_provider.dart';
 
 // App State Providers
 final appStateProvider = StateNotifierProvider<AppStateNotifier, AppState>((ref) {
@@ -308,6 +314,22 @@ class UserNotifier extends StateNotifier<UserState> {
   }
 
   Future<void> logout() async {
+    try {
+      // Cancel all agent background tasks
+      await BackgroundTaskService.cancelAllTasks();
+      
+      // Clear agent database
+      await AgentDatabase.close();
+      
+      // Clear all agent notifications
+      await AgentNotificationService.cancelAllNotifications();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error cleaning up agent system during logout: $e');
+      }
+    }
+    
+    // Clear shared preferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     state = UserState();
