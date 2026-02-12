@@ -4,11 +4,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:farmsphere/l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
+import 'screens/agents/agent_dashboard_screen.dart';
+import 'screens/agents/agent_settings_screen.dart';
 import 'theme/app_theme.dart';
 import 'providers/app_providers.dart';
+import 'services/agent_init.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize AI Agent System
+  await AgentInit.initialize();
   
   // Set preferred orientations
   SystemChrome.setPreferredOrientations([
@@ -40,13 +46,17 @@ class FarmSphereApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       locale: currentLocale,
       supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       home: const SplashScreen(),
+      routes: {
+        '/agents': (context) => const AgentDashboardScreen(),
+        '/agent-settings': (context) => const AgentSettingsScreen(),
+      },
     );
   }
 }

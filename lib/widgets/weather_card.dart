@@ -57,7 +57,7 @@ class WeatherCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      weather['location'] ?? AppLocalizations.of(context)!.yourLocation,
+                      (weather['location'] as String?) ?? AppLocalizations.of(context)!.yourLocation,
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class WeatherCard extends StatelessWidget {
                       Text(
                         // Note: City and country names are proper nouns and typically 
                         // remain in their original language. The API returns English names.
-                        weather['country'] ?? '',
+                        (weather['country'] as String?) ?? '',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.white.withOpacity(0.8),
                           fontSize: 12,
@@ -85,7 +85,7 @@ class WeatherCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(
-                    _getWeatherIcon(weather['condition']),
+                    _getWeatherIcon(weather['condition'] as String?),
                     size: 40,
                     color: Colors.white,
                   ),
@@ -100,7 +100,7 @@ class WeatherCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    '${weather['temperature'] ?? 0}°',
+                    '${(weather['temperature'] as num?)?.round() ?? 0}°',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w200,
@@ -109,7 +109,7 @@ class WeatherCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    _localizeCondition(context, weather['condition']),
+                    _localizeCondition(context, weather['condition'] as String?),
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -119,7 +119,7 @@ class WeatherCard extends StatelessWidget {
                   if (weather['description'] != null) ...[
                     const SizedBox(height: 2),
                     Text(
-                      weather['description'] ?? '',
+                      (weather['description'] as String?) ?? '',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 12,
@@ -149,7 +149,7 @@ class WeatherCard extends StatelessWidget {
                           context,
                           Icons.water_drop,
                           AppLocalizations.of(context)!.humidityLabel,
-                          '${weather['humidity'] ?? 0}%',
+                          '${(weather['humidity'] as num?)?.round() ?? 0}%',
                           Colors.blue[300]!,
                         ),
                       ),
@@ -159,7 +159,7 @@ class WeatherCard extends StatelessWidget {
                           context,
                           Icons.air,
                           AppLocalizations.of(context)!.windLabel,
-                          '${weather['windSpeed'] ?? 0} km/h',
+                          '${(weather['windSpeed'] as num?)?.round() ?? 0} km/h',
                           Colors.green[300]!,
                         ),
                       ),
@@ -174,7 +174,7 @@ class WeatherCard extends StatelessWidget {
                           context,
                           Icons.visibility,
                           AppLocalizations.of(context)!.visibilityLabel,
-                          '${weather['visibility'] ?? 0} km',
+                          '${(weather['visibility'] as num?)?.round() ?? 0} km',
                           Colors.purple[300]!,
                         ),
                       ),
@@ -184,7 +184,7 @@ class WeatherCard extends StatelessWidget {
                           context,
                           Icons.wb_sunny,
                           AppLocalizations.of(context)!.uvIndexLabel,
-                          '${weather['uvIndex'] ?? 0}',
+                          '${(weather['uvIndex'] as num?)?.round() ?? 0}',
                           Colors.yellow[300]!,
                         ),
                       ),

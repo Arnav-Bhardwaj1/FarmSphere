@@ -411,7 +411,7 @@ class _ActivityTip extends StatelessWidget {
   final String title;
   final String description;
 
-  _ActivityTip({
+  const _ActivityTip({
     required this.icon,
     required this.title,
     required this.description,

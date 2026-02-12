@@ -85,7 +85,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
   void _loadTreatmentsFromJson() async {
     try {
       // Load all treatments from the JSON file
-      final String jsonString = '''
+      const String jsonString = '''
 [
   {"name": "Apple___Apple_scab", "cause": "Fungus Venturia inaequalis. Favorable conditions are cool, wet weather.", "cure": "Use fungicides and resistant apple varieties. Prune and destroy infected leaves."},
   {"name": "Apple___Black_rot", "cause": "Caused by the fungus Botryosphaeria obtusa.", "cure": "Prune and remove infected areas. Apply fungicides during the growing season."},
@@ -853,15 +853,15 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            const Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.lightbulb_rounded,
                                   color: Colors.white,
                                   size: 24,
                                 ),
-                                const SizedBox(width: 10),
-                                const Text(
+                                SizedBox(width: 10),
+                                Text(
                                   'Treatment Recommendation',
                                   style: TextStyle(
                     fontSize: 18,

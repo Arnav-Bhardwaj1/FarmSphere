@@ -1056,4 +1056,166 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get postDeleted => 'Post deleted successfully';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get emailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get phoneTooShort => 'Phone number must be at least 10 digits';
+
+  @override
+  String get locationRequired => 'Location is required';
+
+  @override
+  String get agentDashboard => 'AI Agents';
+
+  @override
+  String get agentSettings => 'Agent Settings';
+
+  @override
+  String get agentInsights => 'AI Insights';
+
+  @override
+  String get agentRecommendations => 'Recommendations';
+
+  @override
+  String get agentStatistics => 'Statistics';
+
+  @override
+  String get agentStatus => 'Status';
+
+  @override
+  String get agentEnabled => 'Enabled';
+
+  @override
+  String get agentDisabled => 'Disabled';
+
+  @override
+  String get toggleAgent => 'Toggle Agent';
+
+  @override
+  String get runAgentsNow => 'Run Analysis Now';
+
+  @override
+  String get checkNotifications => 'Check Notifications';
+
+  @override
+  String get testNotification => 'Send Test Notification';
+
+  @override
+  String get agentWeather => 'Weather Intelligence';
+
+  @override
+  String get agentCropHealth => 'Crop Health Monitor';
+
+  @override
+  String get agentActivity => 'Activity Scheduler';
+
+  @override
+  String get agentMarket => 'Market Intelligence';
+
+  @override
+  String get agentResource => 'Resource Optimizer';
+
+  @override
+  String get agentDescription => 'AI-powered farming assistant';
+
+  @override
+  String get weatherAgentDesc => 'Monitors weather and provides alerts';
+
+  @override
+  String get cropHealthAgentDesc => 'Tracks crop health patterns';
+
+  @override
+  String get activityAgentDesc => 'Schedules and reminds farming tasks';
+
+  @override
+  String get marketAgentDesc => 'Analyzes market trends and prices';
+
+  @override
+  String get resourceAgentDesc => 'Optimizes water and fertilizer usage';
+
+  @override
+  String get acknowledge => 'Acknowledge';
+
+  @override
+  String get dismiss => 'Dismiss';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get priority => 'Priority';
+
+  @override
+  String get priorityLow => 'Low';
+
+  @override
+  String get priorityMedium => 'Medium';
+
+  @override
+  String get priorityHigh => 'High';
+
+  @override
+  String get priorityCritical => 'Critical';
+
+  @override
+  String get createdAt => 'Created';
+
+  @override
+  String get expiresAt => 'Expires';
+
+  @override
+  String get noInsightsYet =>
+      'No insights yet. AI agents are analyzing your farm data.';
+
+  @override
+  String get noRecommendationsYet =>
+      'No recommendations yet. Keep using the app for personalized insights.';
+
+  @override
+  String get agentAnalyzing => 'Analyzing...';
+
+  @override
+  String get agentReady => 'Ready';
+
+  @override
+  String get generalSettings => 'General Settings';
+
+  @override
+  String get enableNotifications => 'Enable Notifications';
+
+  @override
+  String get enableAgents => 'Enable AI Agents';
+
+  @override
+  String get agentManagement => 'Agent Management';
+
+  @override
+  String get advancedSettings => 'Advanced Settings';
+
+  @override
+  String get dataRetention => 'Data Retention';
+
+  @override
+  String get clearAgentData => 'Clear All Agent Data';
+
+  @override
+  String get clearAgentDataWarning =>
+      'This will delete all AI insights, recommendations, and historical data. This action cannot be undone.';
+
+  @override
+  String get dataCleared => 'Agent data cleared successfully';
 }

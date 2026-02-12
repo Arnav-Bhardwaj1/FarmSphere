@@ -95,7 +95,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get ok => 'சரி';
 
   @override
-  String get cancel => 'ரத்துசெய்';
+  String get cancel => 'ரத்து செய்';
 
   @override
   String get navHome => 'முகப்பு';
@@ -429,7 +429,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get productivityOverview => 'உற்பத்தித்திறன் கண்ணோட்டம்';
 
   @override
-  String get overallProductivityLabel => 'Overall Productivity';
+  String get overallProductivityLabel => 'மொத்த உற்பத்தித்திறன்';
 
   @override
   String get cropDistribution => 'பயிர் விநியோகம்';
@@ -991,82 +991,250 @@ class AppLocalizationsTa extends AppLocalizations {
   String get schemeUpcoming => 'வரவிருக்கும்';
 
   @override
-  String get postContent => 'Post Content';
+  String get postContent => 'இடுகை உள்ளடக்கம்';
 
   @override
   String get postContentHint =>
-      'Share your farming experience, ask questions, or help other farmers...';
+      'உங்கள் விவசாய அனுபவத்தை பகிர்ந்து கொள்ளுங்கள், கேள்விகள் கேளுங்கள் அல்லது மற்ற விவசாயிகளுக்கு உதவுங்கள்...';
 
   @override
-  String get tags => 'Tags';
+  String get tags => 'குறிச்சொற்கள்';
 
   @override
   String get tagsHint =>
-      'Add tags (e.g., Wheat, Harvest, Disease) - separate with commas';
+      'குறிச்சொற்களைச் சேர்க்கவும் (எ.கா., கோதுமை, அறுவடை, நோய்) - காற்புள்ளிகளால் பிரிக்கவும்';
 
   @override
-  String get postCreatedSuccess => 'Post created successfully!';
+  String get postCreatedSuccess => 'இடுகை வெற்றிகரமாக உருவாக்கப்பட்டது!';
 
   @override
-  String get pleaseEnterContent => 'Please enter post content';
+  String get pleaseEnterContent => 'தயவுசெய்து இடுகை உள்ளடக்கத்தை உள்ளிடவும்';
 
   @override
-  String get addComment => 'Add Comment';
+  String get addComment => 'கருத்தைச் சேர்க்கவும்';
 
   @override
-  String get commentHint => 'Write a comment...';
+  String get commentHint => 'ஒரு கருத்தை எழுதவும்...';
 
   @override
-  String get comment => 'Comment';
+  String get comment => 'கருத்து';
 
   @override
-  String get comments => 'Comments';
+  String get comments => 'கருத்துகள்';
 
   @override
-  String get like => 'Like';
+  String get like => 'விரும்பு';
 
   @override
-  String get unlike => 'Unlike';
+  String get unlike => 'விரும்பலை நீக்கு';
 
   @override
-  String get liked => 'Liked';
+  String get liked => 'விரும்பப்பட்டது';
 
   @override
-  String get postSaved => 'Post saved';
+  String get postSaved => 'இடுகை சேமிக்கப்பட்டது';
 
   @override
-  String get postUnsaved => 'Post removed from saved';
+  String get postUnsaved => 'இடுகை சேமிக்கப்பட்டவற்றிலிருந்து நீக்கப்பட்டது';
 
   @override
-  String get linkCopied => 'Link copied to clipboard';
+  String get linkCopied => 'இணைப்பு கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது';
 
   @override
-  String get userBlocked => 'User blocked successfully';
+  String get userBlocked => 'பயனர் வெற்றிகரமாக தடுக்கப்பட்டார்';
 
   @override
   String get postReported =>
-      'Post reported. Thank you for keeping the community safe.';
+      'இடுகை புகாரளிக்கப்பட்டது. சமூகத்தை பாதுகாப்பாக வைத்ததற்கு நன்றி.';
 
   @override
-  String get sendMessage => 'Send Message';
+  String get sendMessage => 'செய்தியை அனுப்பவும்';
 
   @override
-  String get messageHint => 'Type your message...';
+  String get messageHint => 'உங்கள் செய்தியை தட்டச்சு செய்யவும்...';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+  String get noCommentsYet =>
+      'இன்னும் எந்த கருத்துகளும் இல்லை. முதல் கருத்தை இடுங்கள்!';
 
   @override
   String consultationStarted(String expertName) {
-    return 'Consultation started with $expertName';
+    return '$expertName உடன் பரிந்துரை தொடங்கப்பட்டது';
   }
 
   @override
-  String get typeYourMessage => 'Type your message here...';
+  String get typeYourMessage => 'உங்கள் செய்தியை இங்கே தட்டச்சு செய்யவும்...';
 
   @override
-  String get noMessagesYet => 'No messages yet. Start the conversation!';
+  String get noMessagesYet =>
+      'இன்னும் எந்த செய்திகளும் இல்லை. உரையாடலைத் தொடங்குங்கள்!';
 
   @override
-  String get postDeleted => 'Post deleted successfully';
+  String get postDeleted => 'இடுகை வெற்றிகரமாக நீக்கப்பட்டது';
+
+  @override
+  String get emailRequired => 'மின்னஞ்சல் தேவை';
+
+  @override
+  String get emailInvalid => 'சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்';
+
+  @override
+  String get passwordRequired => 'கடவுச்சொல் தேவை';
+
+  @override
+  String get passwordTooShort =>
+      'கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும்';
+
+  @override
+  String get phoneRequired => 'தொலைபேசி எண் தேவை';
+
+  @override
+  String get phoneTooShort =>
+      'தொலைபேசி எண் குறைந்தது 10 இலக்கங்கள் இருக்க வேண்டும்';
+
+  @override
+  String get locationRequired => 'இடம் தேவை';
+
+  @override
+  String get agentDashboard => 'AI முகவர்கள்';
+
+  @override
+  String get agentSettings => 'முகவர் அமைப்புகள்';
+
+  @override
+  String get agentInsights => 'AI நுண்ணறிவு';
+
+  @override
+  String get agentRecommendations => 'பரிந்துரைகள்';
+
+  @override
+  String get agentStatistics => 'புள்ளிவிவரங்கள்';
+
+  @override
+  String get agentStatus => 'நிலை';
+
+  @override
+  String get agentEnabled => 'இயக்கப்பட்டது';
+
+  @override
+  String get agentDisabled => 'முடக்கப்பட்டது';
+
+  @override
+  String get toggleAgent => 'முகவரை மாற்று';
+
+  @override
+  String get runAgentsNow => 'இப்போது பகுப்பாய்வு செய்';
+
+  @override
+  String get checkNotifications => 'அறிவிப்புகளை சரிபார்';
+
+  @override
+  String get testNotification => 'சோதனை அறிவிப்பு அனுப்பு';
+
+  @override
+  String get agentWeather => 'வானிலை நுண்ணறிவு';
+
+  @override
+  String get agentCropHealth => 'பயிர் சுகாதார கண்காணிப்பு';
+
+  @override
+  String get agentActivity => 'செயல்பாடு திட்டமிடுபவர்';
+
+  @override
+  String get agentMarket => 'சந்தை நுண்ணறிவு';
+
+  @override
+  String get agentResource => 'வள உகப்பாக்கி';
+
+  @override
+  String get agentDescription => 'AI-இயங்கும் விவசாய உதவியாளர்';
+
+  @override
+  String get weatherAgentDesc =>
+      'வானிலையை கண்காணித்து எச்சரிக்கைகளை வழங்குகிறது';
+
+  @override
+  String get cropHealthAgentDesc => 'பயிர் சுகாதார முறைகளை கண்காணிக்கிறது';
+
+  @override
+  String get activityAgentDesc => 'விவசாய பணிகளை திட்டமிட்டு நினைவூட்டுகிறது';
+
+  @override
+  String get marketAgentDesc =>
+      'சந்தை போக்குகள் மற்றும் விலைகளை பகுப்பாய்வு செய்கிறது';
+
+  @override
+  String get resourceAgentDesc => 'நீர் மற்றும் உர பயன்பாட்டை உகப்பாக்குகிறது';
+
+  @override
+  String get acknowledge => 'ஒப்புக்கொள்';
+
+  @override
+  String get dismiss => 'நிராகரி';
+
+  @override
+  String get viewDetails => 'விவரங்களைக் காண்க';
+
+  @override
+  String get priority => 'முன்னுரிமை';
+
+  @override
+  String get priorityLow => 'குறைவு';
+
+  @override
+  String get priorityMedium => 'நடுத்தர';
+
+  @override
+  String get priorityHigh => 'உயர்';
+
+  @override
+  String get priorityCritical => 'முக்கியமான';
+
+  @override
+  String get createdAt => 'உருவாக்கப்பட்டது';
+
+  @override
+  String get expiresAt => 'காலாவதியாகும்';
+
+  @override
+  String get noInsightsYet =>
+      'இன்னும் நுண்ணறிவு இல்லை. AI முகவர்கள் உங்கள் பண்ணை தரவை பகுப்பாய்வு செய்கின்றன.';
+
+  @override
+  String get noRecommendationsYet =>
+      'இன்னும் பரிந்துரைகள் இல்லை. தனிப்பயன் நுண்ணறிவுக்காக பயன்பாட்டை தொடர்ந்து பயன்படுத்துங்கள்.';
+
+  @override
+  String get agentAnalyzing => 'பகுப்பாய்வு செய்கிறது...';
+
+  @override
+  String get agentReady => 'தயார்';
+
+  @override
+  String get generalSettings => 'பொது அமைப்புகள்';
+
+  @override
+  String get enableNotifications => 'அறிவிப்புகளை இயக்கு';
+
+  @override
+  String get enableAgents => 'AI முகவர்களை இயக்கு';
+
+  @override
+  String get agentManagement => 'முகவர் மேலாண்மை';
+
+  @override
+  String get advancedSettings => 'மேம்பட்ட அமைப்புகள்';
+
+  @override
+  String get dataRetention => 'தரவு தக்கவைப்பு';
+
+  @override
+  String get clearAgentData => 'அனைத்து முகவர் தரவையும் அழி';
+
+  @override
+  String get clearAgentDataWarning =>
+      'இது அனைத்து AI நுண்ணறிவு, பரிந்துரைகள் மற்றும் வரலாற்று தரவை நீக்கும். இந்த செயலை மாற்ற முடியாது.';
+
+  @override
+  String get dataCleared => 'முகவர் தரவு வெற்றிகரமாக அழிக்கப்பட்டது';
 }

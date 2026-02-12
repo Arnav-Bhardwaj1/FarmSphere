@@ -634,7 +634,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
           final messages = state.chatMessages[chatId] ?? [];
           
           return Dialog(
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(
@@ -683,7 +683,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                       if (!isMe)
                                         Text(
                                           message['userName'] ?? 'User',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
@@ -691,7 +691,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                                         ),
                                       Text(
                                         message['content'] ?? '',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                         ),
                                       ),
@@ -772,10 +772,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
             Text('${t.rating}: ${expert['rating'].toString()}/5'),
             Text('${t.reviews}: ${expert['reviews'].toString()}'),
             const SizedBox(height: 16),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 hintText: 'Describe your farming issue or question...',
-                border: const OutlineInputBorder(),
+                border: OutlineInputBorder(),
               ),
               maxLines: 5,
             ),

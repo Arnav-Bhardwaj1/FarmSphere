@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:farmsphere/l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../providers/app_providers.dart';
 import '../../widgets/diagnosis_result_card.dart';
 import '../../widgets/loading_overlay.dart';
@@ -29,6 +30,28 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
   }
 
   Future<void> _pickImage() async {
+    // Check camera permission
+    final cameraStatus = await Permission.camera.status;
+    if (cameraStatus.isDenied) {
+      final result = await Permission.camera.request();
+      if (!result.isGranted) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Camera permission is required to scan crops'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+    } else if (cameraStatus.isPermanentlyDenied) {
+      if (mounted) {
+        _showPermissionDialog();
+      }
+      return;
+    }
+    
     try {
       final XFile? image = await _imagePicker.pickImage(
         source: ImageSource.camera,
@@ -41,13 +64,41 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error picking image: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error picking image: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
+  }
+  
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Camera Permission Required'),
+        content: const Text(
+          'FarmSphere needs camera access to scan and diagnose crop diseases. '
+          'Please enable camera permission in your device settings.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _pickImageFromGallery() async {

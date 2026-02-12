@@ -256,7 +256,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return ' ';
+                      return 'Please enter your name';
+                    }
+                    if (value.trim().length < 2) {
+                      return 'Name must be at least 2 characters';
                     }
                     return null;
                   },
@@ -273,10 +276,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return ' ';
+                      return t.emailRequired;
                     }
-                    if (!value.contains('@')) {
-                      return ' ';
+                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return t.emailInvalid;
                     }
                     return null;
                   },
@@ -293,10 +297,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return ' ';
+                      return t.phoneRequired;
                     }
                     if (value.length < 10) {
-                      return ' ';
+                      return t.phoneTooShort;
                     }
                     return null;
                   },
@@ -317,7 +321,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return ' ';
+                            return t.locationRequired;
                           }
                           return null;
                         },

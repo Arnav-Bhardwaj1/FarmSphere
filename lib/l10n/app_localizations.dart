@@ -2143,6 +2143,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Post deleted successfully'**
   String get postDeleted;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get emailInvalid;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @phoneTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be at least 10 digits'**
+  String get phoneTooShort;
+
+  /// No description provided for @locationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is required'**
+  String get locationRequired;
+
+  /// No description provided for @agentDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Agents'**
+  String get agentDashboard;
+
+  /// No description provided for @agentSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent Settings'**
+  String get agentSettings;
+
+  /// No description provided for @agentInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Insights'**
+  String get agentInsights;
+
+  /// No description provided for @agentRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommendations'**
+  String get agentRecommendations;
+
+  /// No description provided for @agentStatistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get agentStatistics;
+
+  /// No description provided for @agentStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get agentStatus;
+
+  /// No description provided for @agentEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Enabled'**
+  String get agentEnabled;
+
+  /// No description provided for @agentDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Disabled'**
+  String get agentDisabled;
+
+  /// No description provided for @toggleAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle Agent'**
+  String get toggleAgent;
+
+  /// No description provided for @runAgentsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Run Analysis Now'**
+  String get runAgentsNow;
+
+  /// No description provided for @checkNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Notifications'**
+  String get checkNotifications;
+
+  /// No description provided for @testNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Test Notification'**
+  String get testNotification;
+
+  /// No description provided for @agentWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Intelligence'**
+  String get agentWeather;
+
+  /// No description provided for @agentCropHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Health Monitor'**
+  String get agentCropHealth;
+
+  /// No description provided for @agentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Scheduler'**
+  String get agentActivity;
+
+  /// No description provided for @agentMarket.
+  ///
+  /// In en, this message translates to:
+  /// **'Market Intelligence'**
+  String get agentMarket;
+
+  /// No description provided for @agentResource.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource Optimizer'**
+  String get agentResource;
+
+  /// No description provided for @agentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-powered farming assistant'**
+  String get agentDescription;
+
+  /// No description provided for @weatherAgentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitors weather and provides alerts'**
+  String get weatherAgentDesc;
+
+  /// No description provided for @cropHealthAgentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracks crop health patterns'**
+  String get cropHealthAgentDesc;
+
+  /// No description provided for @activityAgentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules and reminds farming tasks'**
+  String get activityAgentDesc;
+
+  /// No description provided for @marketAgentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzes market trends and prices'**
+  String get marketAgentDesc;
+
+  /// No description provided for @resourceAgentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimizes water and fertilizer usage'**
+  String get resourceAgentDesc;
+
+  /// No description provided for @acknowledge.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledge'**
+  String get acknowledge;
+
+  /// No description provided for @dismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get dismiss;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// No description provided for @priority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get priority;
+
+  /// No description provided for @priorityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get priorityLow;
+
+  /// No description provided for @priorityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get priorityMedium;
+
+  /// No description provided for @priorityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get priorityHigh;
+
+  /// No description provided for @priorityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get priorityCritical;
+
+  /// No description provided for @createdAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get createdAt;
+
+  /// No description provided for @expiresAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires'**
+  String get expiresAt;
+
+  /// No description provided for @noInsightsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No insights yet. AI agents are analyzing your farm data.'**
+  String get noInsightsYet;
+
+  /// No description provided for @noRecommendationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No recommendations yet. Keep using the app for personalized insights.'**
+  String get noRecommendationsYet;
+
+  /// No description provided for @agentAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing...'**
+  String get agentAnalyzing;
+
+  /// No description provided for @agentReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get agentReady;
+
+  /// No description provided for @generalSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'General Settings'**
+  String get generalSettings;
+
+  /// No description provided for @enableNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Notifications'**
+  String get enableNotifications;
+
+  /// No description provided for @enableAgents.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable AI Agents'**
+  String get enableAgents;
+
+  /// No description provided for @agentManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent Management'**
+  String get agentManagement;
+
+  /// No description provided for @advancedSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Settings'**
+  String get advancedSettings;
+
+  /// No description provided for @dataRetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Retention'**
+  String get dataRetention;
+
+  /// No description provided for @clearAgentData.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Agent Data'**
+  String get clearAgentData;
+
+  /// No description provided for @clearAgentDataWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This will delete all AI insights, recommendations, and historical data. This action cannot be undone.'**
+  String get clearAgentDataWarning;
+
+  /// No description provided for @dataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent data cleared successfully'**
+  String get dataCleared;
 }
 
 class _AppLocalizationsDelegate

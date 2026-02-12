@@ -5,8 +5,6 @@ import 'package:farmsphere/l10n/app_localizations.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
 import 'market/market_screen.dart';
-import 'activities/activities_screen.dart';
-import 'community/community_screen.dart';
 import 'profile/profile_screen.dart';
 import '../chatbot.dart';
 
@@ -25,8 +23,6 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
     const CropHealthScreen(),
     const WeatherScreen(),
     const MarketScreen(),
-    const ActivitiesScreen(),
-    const CommunityScreen(),
     const ProfileScreen(),
   ];
 
@@ -34,7 +30,7 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
     final t = AppLocalizations.of(context)!;
     return [
     NavigationItem(
-      icon: Icons.home,
+      icon: Icons.home_outlined,
       activeIcon: Icons.home,
         label: t.navHome,
     ),
@@ -52,16 +48,6 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
       icon: Icons.trending_up_outlined,
       activeIcon: Icons.trending_up,
         label: t.navMarket,
-    ),
-    NavigationItem(
-      icon: Icons.analytics_outlined,
-      activeIcon: Icons.analytics,
-        label: t.navActivities,
-    ),
-    NavigationItem(
-      icon: Icons.people_outline,
-      activeIcon: Icons.people,
-        label: t.navCommunity,
     ),
     NavigationItem(
       icon: Icons.person_outline,
