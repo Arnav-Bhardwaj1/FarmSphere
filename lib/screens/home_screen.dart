@@ -71,12 +71,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           Stack(
             children: [
-              IconButton(
-                icon: const Icon(Icons.smart_toy_outlined),
+              TextButton.icon(
+                icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+                label: const Text(
+                  'AI Agents',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.pushNamed(context, '/agents');
                 },
-                tooltip: 'AI Agents',
               ),
               if (agentState.unacknowledgedDecisions.isNotEmpty)
                 Positioned(
@@ -324,7 +327,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 1.2,
+                childAspectRatio: 4.4,
                 children: [
                   FeatureCard(
                     icon: Icons.camera_alt,

@@ -208,7 +208,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "AI ఏజెంట్లు",
+  "manageAIAgents": "మీ AI వ్యవసాయ సహాయకులను నిర్వహించండి",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

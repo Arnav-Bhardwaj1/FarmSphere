@@ -153,7 +153,13 @@ class AgentNotifier extends StateNotifier<AgentState> {
   Future<void> runAgentsNow() async {
     try {
       state = state.copyWith(isLoading: true, error: null);
-      await AgentService.runAgentsNow();
+      
+      // Execute agents and ensure minimum 5 second loading time
+      await Future.wait([
+        AgentService.runAgentsNow(),
+        Future.delayed(const Duration(seconds: 5)),
+      ]);
+      
       await loadAgentData(); // Refresh after running
       state = state.copyWith(isLoading: false);
     } catch (e) {

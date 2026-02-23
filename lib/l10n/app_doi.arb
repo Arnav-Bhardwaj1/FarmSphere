@@ -204,7 +204,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "AI एजेंट",
+  "manageAIAgents": "अप्पे AI खेतीबाड़ी सहाईकां दा प्रबंधन करो",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

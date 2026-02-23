@@ -1082,6 +1082,9 @@ class AppLocalizationsMai extends AppLocalizations {
   String get agentDashboard => 'AI Agents';
 
   @override
+  String get manageAIAgents => 'Manage your AI farming assistants';
+
+  @override
   String get agentSettings => 'Agent Settings';
 
   @override

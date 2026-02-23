@@ -32,7 +32,35 @@ class AgentDashboardScreen extends ConsumerWidget {
         ],
       ),
       body: agentState.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.agriculture,
+                    size: 80,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'FarmSphere',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Running AI Agents...',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            )
           : RefreshIndicator(
               onRefresh: () => agentNotifier.refresh(),
               child: ListView(
@@ -234,7 +262,7 @@ class AgentDashboardScreen extends ConsumerWidget {
     final agentInfo = _getAgentInfo(type);
 
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
         leading: Icon(agentInfo['icon'] as IconData, color: agentInfo['color'] as Color),
         title: Text(

@@ -351,6 +351,7 @@
   "locationRequired": "Location is required",
   
   "agentDashboard": "AI Agents",
+  "manageAIAgents": "Manage your AI farming assistants",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

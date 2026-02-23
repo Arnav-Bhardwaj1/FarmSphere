@@ -5,6 +5,7 @@ import 'package:farmsphere/l10n/app_localizations.dart';
 import 'crop_health/crop_health_screen.dart';
 import 'weather/weather_screen.dart';
 import 'market/market_screen.dart';
+import 'community/community_screen.dart';
 import 'profile/profile_screen.dart';
 import '../chatbot.dart';
 
@@ -23,6 +24,7 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
     const CropHealthScreen(),
     const WeatherScreen(),
     const MarketScreen(),
+    const CommunityScreen(),
     const ProfileScreen(),
   ];
 
@@ -48,6 +50,11 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
       icon: Icons.trending_up_outlined,
       activeIcon: Icons.trending_up,
         label: t.navMarket,
+    ),
+    NavigationItem(
+      icon: Icons.people_outline,
+      activeIcon: Icons.people,
+        label: t.community,
     ),
     NavigationItem(
       icon: Icons.person_outline,
@@ -86,8 +93,8 @@ class _MainNavigationState extends ConsumerState<MainNavigation> {
           backgroundColor: Colors.white,
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Colors.grey[600],
-          selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-          unselectedLabelStyle: const TextStyle(fontSize: 12),
+          selectedLabelStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          unselectedLabelStyle: const TextStyle(fontSize: 10),
           items: items.map((item) {
             final isSelected = items.indexOf(item) == _currentIndex;
             return BottomNavigationBarItem(

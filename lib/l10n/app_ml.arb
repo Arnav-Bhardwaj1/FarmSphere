@@ -204,7 +204,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "AI ഏജന്റുകൾ",
+  "manageAIAgents": "നിങ്ങളുടെ AI കാർഷിക സഹായികളെ നിയന്ത്രിക്കുക",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

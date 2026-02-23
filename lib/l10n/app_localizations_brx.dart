@@ -1079,7 +1079,10 @@ class AppLocalizationsBrx extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
-  String get agentDashboard => 'AI Agents';
+  String get agentDashboard => 'AI एजेन्टसिफोर';
+
+  @override
+  String get manageAIAgents => 'नुंथि एआई खानसेलाइ साहाज्य्थिफोर म्यानेज हो';
 
   @override
   String get agentSettings => 'Agent Settings';

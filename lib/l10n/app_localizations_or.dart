@@ -1079,7 +1079,10 @@ class AppLocalizationsOr extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
-  String get agentDashboard => 'AI Agents';
+  String get agentDashboard => 'AI ଏଜେଣ୍ଟ';
+
+  @override
+  String get manageAIAgents => 'ଆପଣଙ୍କ AI କୃଷି ସହାୟକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ';
 
   @override
   String get agentSettings => 'Agent Settings';

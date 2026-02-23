@@ -1079,7 +1079,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
-  String get agentDashboard => 'AI Agents';
+  String get agentDashboard => 'AI ಏಜೆಂಟ್‌ಗಳು';
+
+  @override
+  String get manageAIAgents => 'ನಿಮ್ಮ AI ಕೃಷಿ ಸಹಾಯಕರನ್ನು ನಿರ್ವಹಿಸಿ';
 
   @override
   String get agentSettings => 'Agent Settings';

@@ -208,7 +208,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "এআই এজেন্ট",
+  "manageAIAgents": "আপনার এআই কৃষি সহায়কদের পরিচালনা করুন",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

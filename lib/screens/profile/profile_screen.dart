@@ -110,8 +110,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             ProfileOptionTile(
               icon: Icons.smart_toy,
-              title: 'AI Agents',
-              subtitle: 'Manage your AI farming assistants',
+              title: t.agentDashboard,
+              subtitle: t.manageAIAgents,
               onTap: () {
                 Navigator.pushNamed(context, '/agent-settings');
               },

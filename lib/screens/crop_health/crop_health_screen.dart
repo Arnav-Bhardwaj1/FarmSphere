@@ -381,7 +381,7 @@ class _CropHealthScreenState extends ConsumerState<CropHealthScreen> {
                     label: Text(t.aiDiseaseDetection),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: const Color(0xFF36946F),
+                      backgroundColor: const Color(0xFFFFA726),
                       foregroundColor: Colors.white,
                     ),
                   ),

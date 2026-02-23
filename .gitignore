@@ -27,7 +27,16 @@ __pycache__/
 *.iws
 .idea/
 
+# Documentation files
 ML_MODEL_SETUP.md
+README.md
+**/README.md
+AGENT_SYSTEM_README.md
+AGENT_SYSTEM_QUICKSTART.md
+FIXES_IMPLEMENTATION_SUMMARY.md
+LOGICAL_ISSUES_FIXES_PLAN.md
+PLATFORM_PERMISSIONS_SETUP.md
+SECRETS_MANAGEMENT.md
 
 # Flutter/Dart/Pub related
 **/doc/api/

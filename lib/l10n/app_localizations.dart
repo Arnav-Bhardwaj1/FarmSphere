@@ -2192,6 +2192,12 @@ abstract class AppLocalizations {
   /// **'AI Agents'**
   String get agentDashboard;
 
+  /// No description provided for @manageAIAgents.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your AI farming assistants'**
+  String get manageAIAgents;
+
   /// No description provided for @agentSettings.
   ///
   /// In en, this message translates to:

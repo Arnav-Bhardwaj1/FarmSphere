@@ -1099,6 +1099,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get agentDashboard => 'AI முகவர்கள்';
 
   @override
+  String get manageAIAgents => 'உங்கள் AI விவசாய உதவியாளர்களை நிர்வகிக்கவும்';
+
+  @override
   String get agentSettings => 'முகவர் அமைப்புகள்';
 
   @override

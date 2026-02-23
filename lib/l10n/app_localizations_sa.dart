@@ -1079,7 +1079,10 @@ class AppLocalizationsSa extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
-  String get agentDashboard => 'AI Agents';
+  String get agentDashboard => 'एआइ प्रतिनिधयः';
+
+  @override
+  String get manageAIAgents => 'भवतां एआइ कृषि सहायकानां प्रबन्धनं कुर्वन्तु';
 
   @override
   String get agentSettings => 'Agent Settings';

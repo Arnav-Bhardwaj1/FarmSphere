@@ -204,7 +204,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "AI ਏਜੰਟ",
+  "manageAIAgents": "ਆਪਣੇ AI ਖੇਤੀ ਸਹਾਇਕਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

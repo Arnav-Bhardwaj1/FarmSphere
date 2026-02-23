@@ -352,6 +352,7 @@
   "locationRequired": "स्थान आवश्यक है",
   
   "agentDashboard": "एआई एजेंट",
+  "manageAIAgents": "अपने एआई खेती सहायकों को प्रबंधित करें",
   "agentSettings": "एजेंट सेटिंग्स",
   "agentInsights": "एआई अंतर्दृष्टि",
   "agentRecommendations": "सिफारिशें",

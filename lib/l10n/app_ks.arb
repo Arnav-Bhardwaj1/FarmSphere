@@ -204,7 +204,8 @@
   "phoneTooShort": "Phone number must be at least 10 digits",
   "locationRequired": "Location is required",
   
-  "agentDashboard": "AI Agents",
+  "agentDashboard": "AI ايجنٹ",
+  "manageAIAgents": "پنن AI کشتکاری مددگارن ہند انتظام کریو",
   "agentSettings": "Agent Settings",
   "agentInsights": "AI Insights",
   "agentRecommendations": "Recommendations",

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io' show Platform;
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -82,47 +84,62 @@ class _AIChatbotState extends State<AIChatbot> {
 
   /// Initialize speech-to-text and text-to-speech
   Future<void> _initializeVoiceFeatures() async {
-    try {
-      // Initialize Speech-to-Text
-      _speechAvailable = await _speech.initialize(
-        onError: (error) {
-          print('Speech recognition error: $error');
-          if (mounted) {
-            setState(() {
-              _isListening = false;
-            });
-            _showSnackBar('Speech recognition error: ${error.errorMsg}');
-          }
-        },
-        onStatus: (status) {
-          print('Speech recognition status: $status');
-          if (mounted) {
-            if (status == 'done' || status == 'notListening' || status == 'canceled') {
-              setState(() {
-                _isListening = false;
-              });
-            } else if (status == 'listening') {
-              setState(() {
-                _isListening = true;
-              });
-            }
-          }
-        },
-      );
-      
-      if (!_speechAvailable) {
-        print('Speech recognition not available on this device');
-        if (mounted) {
-          setState(() {});
-        }
-      } else {
-        print('Speech recognition initialized successfully');
-      }
-    } catch (e) {
-      print('Error initializing speech recognition: $e');
+    // Check if platform supports speech_to_text
+    // speech_to_text is primarily supported on Android and iOS
+    // For Windows/Desktop: Voice input is not available due to plugin limitations
+    // Alternative: Users can use Windows built-in speech recognition (Win+H) and type
+    bool isPlatformSupported = !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+    
+    if (!isPlatformSupported) {
+      print('Speech recognition not supported on this platform (${kIsWeb ? "Web" : Platform.operatingSystem})');
+      print('Windows users: Use Win+H for Windows voice typing, or install on mobile for voice features');
       _speechAvailable = false;
       if (mounted) {
         setState(() {});
+      }
+    } else {
+      try {
+        // Initialize Speech-to-Text
+        _speechAvailable = await _speech.initialize(
+          onError: (error) {
+            print('Speech recognition error: $error');
+            if (mounted) {
+              setState(() {
+                _isListening = false;
+              });
+              _showSnackBar('Speech recognition error: ${error.errorMsg}');
+            }
+          },
+          onStatus: (status) {
+            print('Speech recognition status: $status');
+            if (mounted) {
+              if (status == 'done' || status == 'notListening' || status == 'canceled') {
+                setState(() {
+                  _isListening = false;
+                });
+              } else if (status == 'listening') {
+                setState(() {
+                  _isListening = true;
+                });
+              }
+            }
+          },
+        );
+        
+        if (!_speechAvailable) {
+          print('Speech recognition not available on this device');
+          if (mounted) {
+            setState(() {});
+          }
+        } else {
+          print('Speech recognition initialized successfully');
+        }
+      } catch (e) {
+        print('Error initializing speech recognition: $e');
+        _speechAvailable = false;
+        if (mounted) {
+          setState(() {});
+        }
       }
     }
 
@@ -853,7 +870,7 @@ class _AIChatbotState extends State<AIChatbot> {
                   padding: const EdgeInsets.all(4),
             child: Row(
               children: [
-                // Voice input button
+                // Voice input button - Only show on supported platforms
                 if (_speechAvailable)
                   Tooltip(
                     message: _isListening 

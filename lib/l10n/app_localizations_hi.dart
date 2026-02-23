@@ -1084,6 +1084,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get agentDashboard => 'एआई एजेंट';
 
   @override
+  String get manageAIAgents => 'अपने एआई खेती सहायकों को प्रबंधित करें';
+
+  @override
   String get agentSettings => 'एजेंट सेटिंग्स';
 
   @override

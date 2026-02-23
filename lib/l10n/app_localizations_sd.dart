@@ -1079,7 +1079,10 @@ class AppLocalizationsSd extends AppLocalizations {
   String get locationRequired => 'Location is required';
 
   @override
-  String get agentDashboard => 'AI Agents';
+  String get agentDashboard => 'AI ايجنٽ';
+
+  @override
+  String get manageAIAgents => 'پنهنجي AI زراعتي مددگارن جو انتظام ڪريو';
 
   @override
   String get agentSettings => 'Agent Settings';

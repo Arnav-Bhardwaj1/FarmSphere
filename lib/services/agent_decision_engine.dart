@@ -15,7 +15,7 @@ class AgentDecisionEngine {
 
     try {
       _model = GenerativeModel(
-        model: 'gemini-2.0-flash-exp',
+        model: 'gemini-2.5-flash',
         apiKey: geminiApiKey,
         generationConfig: GenerationConfig(
           temperature: 0.7,
