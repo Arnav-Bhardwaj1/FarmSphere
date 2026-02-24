@@ -11,6 +11,12 @@ FarmSphere is a comprehensive Flutter application designed to assist farmers wit
 - **Weather & Alerts** - Real-time weather updates and agricultural alerts
 - **Market Prices & Schemes** - Access to current crop prices and government schemes
 - **Multilingual Support (Local Language Support)** - Full app and chatbot support for 22+ Indian languages like Hindi, Tamil, Marathi and more.
+- **Autonomous AI Agents** - Background monitoring and proactive recommendations for farming activities
+  - **Weather Intelligence** - Real-time analysis and critical weather alerts
+  - **Crop Health Monitoring** - Pattern detection and disease prevention tips
+  - **Activity Scheduling** - Smart timing for irrigation, fertilizing, and more
+  - **Market Intelligence** - Price trend analysis and selling opportunities
+  - **Resource Optimization** - Efficiency suggestions for water and fertilizer
 - **Activity Logging & Analytics** - Track farm practices and get personalized insights
 - **Farmer Community Platform** - Connect with fellow farmers and agricultural experts
   - Create posts, interact with likes and comments, save/bookmark content
@@ -89,6 +95,8 @@ The app includes the following main screens:
 - **Market Screen** - Crop prices and government schemes
 - **Activities Screen** - Farm activity logging and analytics
 - **Community Screen** - Farmer community platform with posts, chats, and expert consultations
+- **Agent Dashboard** - Overview of AI agent insights and manual run controls
+- **Agent Settings** - Configure and toggle individual AI agents
 - **Profile Screen** - User settings and preferences
 
 ## 🏗️ Architecture
@@ -230,7 +238,9 @@ Key dependencies include:
 - `geolocator` - Location services
 - `speech_to_text` - Voice input
 - `flutter_tts` - Text-to-speech
-- `google_generative_ai` - AI chatbot integration
+- `google_generative_ai` - AI chatbot and agent reasoning integration
+- `workmanager` - Background task scheduling for AI agents
+- `flutter_local_notifications` - Priority alerts and agent notifications
 - `socket_io_client` - Real-time communication
 - `url_launcher` - Open external links
 - `cached_network_image` - Image caching
