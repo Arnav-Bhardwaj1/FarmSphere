@@ -353,20 +353,21 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
         ),
               child: Column(
                 children: [
-            // Custom App Bar with gradient
+            // Custom App Bar with gradient and decorative elements
             Container(
               padding: const EdgeInsets.fromLTRB(16, 50, 16, 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.9)],
+                  colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.85)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
+                    color: widget.appBarColor.withOpacity(0.3),
+                    blurRadius: 16,
+                    offset: const Offset(0, 4),
+                    spreadRadius: 1,
                   ),
                 ],
               ),
@@ -374,7 +375,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
                       onPressed: () => Navigator.pop(context),
                     ),
                     Expanded(
@@ -384,25 +385,67 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                             padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: Colors.white.withOpacity(0.15)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                             ),
                             child: const Icon(
-                              Icons.bug_report_rounded,
+                              Icons.biotech_rounded,
                               color: Colors.white,
                               size: 24,
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
                               widget.title,
                               style: widget.titleStyle ?? const TextStyle(
                                 color: Colors.white,
-                                fontSize: 22,
+                                fontSize: 19,
                                 fontWeight: FontWeight.w700,
-                                letterSpacing: 0.5,
+                                letterSpacing: 0.3,
                               ),
                             ),
+                                const SizedBox(height: 2),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 7,
+                                      height: 7,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF4CAF50),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFF4CAF50).withOpacity(0.5),
+                                            blurRadius: 4,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'AI-Powered · Ready',
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.7),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                          ),
                           ),
                         ],
                       ),
@@ -591,39 +634,65 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                           colors: [
-                                            widget.appBarColor.withOpacity(0.1),
-                                            Colors.grey.shade100,
+                                            widget.appBarColor.withOpacity(0.08),
+                                            Colors.grey.shade50,
+                                            widget.appBarColor.withOpacity(0.05),
                                           ],
                                         ),
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(24),
                             border: Border.all(
-                                          color: widget.appBarColor.withOpacity(0.3),
-                                          width: 3,
+                                          color: widget.appBarColor.withOpacity(0.2),
+                                          width: 2,
                             ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: widget.appBarColor.withOpacity(0.08),
+                                            blurRadius: 20,
+                                            offset: const Offset(0, 6),
+                                            spreadRadius: 2,
+                                          ),
+                                        ],
                           ),
                                       child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                             Container(
-                                              padding: const EdgeInsets.all(20),
+                                              padding: const EdgeInsets.all(24),
                                               decoration: BoxDecoration(
-                                                color: widget.appBarColor.withOpacity(0.1),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    widget.appBarColor.withOpacity(0.15),
+                                                    widget.appBarColor.withOpacity(0.08),
+                                                  ],
+                                                ),
                                                 shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: widget.appBarColor.withOpacity(0.15),
+                                                    blurRadius: 16,
+                                                    spreadRadius: 4,
+                                                  ),
+                                                ],
                                               ),
                                               child: Icon(
                                                 Icons.photo_camera_rounded,
-                                  size: 64,
-                                                color: widget.appBarColor,
+                                  size: 52,
+                                                color: widget.appBarColor.withOpacity(0.7),
                                               ),
                                 ),
-                                            const SizedBox(height: 20),
-                                Text(
+                                            const SizedBox(height: 24),
+                                ShaderMask(
+                                  shaderCallback: (bounds) => LinearGradient(
+                                    colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.7)],
+                                  ).createShader(bounds),
+                                  child: const Text(
                                               'Scan Your Plant',
-                                  style: TextStyle(
-                                                color: widget.appBarColor,
+                                    style: TextStyle(
+                                                color: Colors.white,
                                                 fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                                                fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                                             const SizedBox(height: 8),
@@ -631,7 +700,7 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
                                               'Capture or select an image to detect diseases',
                                               textAlign: TextAlign.center,
                                   style: TextStyle(
-                                                color: Colors.grey[600],
+                                                color: Colors.grey[500],
                                     fontSize: 14,
                                   ),
                                 ),
@@ -657,15 +726,15 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
           Container(
             margin: const EdgeInsets.only(bottom: 12),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(18),
               gradient: LinearGradient(
                 colors: [widget.fabColor, widget.fabColor.withOpacity(0.8)],
               ),
               boxShadow: [
                 BoxShadow(
                   color: widget.fabColor.withOpacity(0.4),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  blurRadius: 14,
+                  offset: const Offset(0, 5),
                   spreadRadius: 2,
                 ),
               ],
@@ -675,21 +744,22 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
             onPressed: _pickImageFromCamera,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 28),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 26),
             ),
           ),
           // Gallery button with gradient
           Container(
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.circular(18),
               gradient: LinearGradient(
                 colors: [widget.fabColor, widget.fabColor.withOpacity(0.8)],
               ),
               boxShadow: [
                 BoxShadow(
                   color: widget.fabColor.withOpacity(0.4),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  blurRadius: 14,
+                  offset: const Offset(0, 5),
                   spreadRadius: 2,
                 ),
               ],
@@ -699,7 +769,8 @@ class _PlantDiseaseDetectorState extends State<PlantDiseaseDetector> {
             onPressed: _pickImageFromGallery,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              child: const Icon(Icons.photo_library_rounded, color: Colors.white, size: 28),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+              child: const Icon(Icons.photo_library_rounded, color: Colors.white, size: 26),
             ),
           ),
         ],

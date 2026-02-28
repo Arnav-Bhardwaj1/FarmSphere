@@ -1,0 +1,1 @@
+import 'package:flutter_tts/flutter_tts.dart'; void main() async { FlutterTts tts = FlutterTts(); print(await tts.getLanguages); }

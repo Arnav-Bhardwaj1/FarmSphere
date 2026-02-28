@@ -145,23 +145,58 @@ class _AIChatbotState extends State<AIChatbot> {
 
     // Initialize Text-to-Speech
     final ttsLanguage = _getTTSLanguageCode();
-    await _flutterTts.setLanguage(ttsLanguage);
-    await _flutterTts.setSpeechRate(1.0);
+    await _setTtsLanguageSafe(ttsLanguage);
+    await _flutterTts.setSpeechRate(0.45); // Lowered speech rate to sound natural
     await _flutterTts.setVolume(1.0);
     await _flutterTts.setPitch(1.0);
     
     _flutterTts.setCompletionHandler(() {
-      setState(() {
-        _isSpeaking = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isSpeaking = false;
+        });
+      }
     });
 
     _flutterTts.setErrorHandler((msg) {
       print('TTS error: $msg');
-      setState(() {
-        _isSpeaking = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isSpeaking = false;
+        });
+      }
     });
+  }
+
+  /// Safely set TTS language, matching prefixes if exact match fails
+  Future<void> _setTtsLanguageSafe(String targetCode) async {
+    try {
+      final languages = await _flutterTts.getLanguages;
+      if (languages is List) {
+        final langPrefix = targetCode.split(RegExp(r'[_|-]'))[0];
+        
+        // 1. Try exact match
+        if (languages.contains(targetCode)) {
+          await _flutterTts.setLanguage(targetCode);
+          return;
+        }
+        
+        // 2. Try prefix match
+        for (final lang in languages) {
+          final lString = lang.toString();
+          if (lString.startsWith('${langPrefix}_') || 
+              lString.startsWith('${langPrefix}-') ||
+              lString == langPrefix) {
+            await _flutterTts.setLanguage(lString);
+            return;
+          }
+        }
+      }
+      // Fallback
+      await _flutterTts.setLanguage(targetCode);
+    } catch (e) {
+      print('Error setting TTS language: $e');
+    }
   }
 
   /// Initialize Gemini API connection
@@ -203,7 +238,7 @@ class _AIChatbotState extends State<AIChatbot> {
       _targetLangCode = _getCurrentLanguage();
       // Update TTS language
       final ttsLanguage = _getTTSLanguageCode();
-      _flutterTts.setLanguage(ttsLanguage);
+      _setTtsLanguageSafe(ttsLanguage);
       
       // Add welcome message in selected language
       final welcomeByLang = <String, String>{
@@ -497,7 +532,7 @@ class _AIChatbotState extends State<AIChatbot> {
     try {
       // Update TTS language if needed
       final ttsLanguage = _getTTSLanguageCode();
-      await _flutterTts.setLanguage(ttsLanguage);
+      await _setTtsLanguageSafe(ttsLanguage);
       
       setState(() {
         _isSpeaking = true;
@@ -635,16 +670,38 @@ class _AIChatbotState extends State<AIChatbot> {
     
     // Update TTS language if changed
     final ttsLanguage = _getTTSLanguageCode();
-    await _flutterTts.setLanguage(ttsLanguage);
+    await _setTtsLanguageSafe(ttsLanguage);
 
-    final userMessage = _controller.text.trim();
+    final rawUserMessage = _controller.text.trim();
     _controller.clear();
 
-    // Add user message as-is (don't translate)
+    // Show loading immediately
     setState(() {
-      messages.add({'text': userMessage, 'isUser': true, 'timestamp': DateTime.now()});
       _isLoading = true;
       _showTypingIndicator = true;
+    });
+    
+    _scrollToBottom();
+    
+    // Translate user message if language is not English
+    String displayMessage = rawUserMessage;
+    if (currentLang != 'en') {
+      try {
+        final prompt = 'Translate the following text to the language with code "$currentLang". '
+            'If it is already in that language, return it exactly as is. '
+            'Return ONLY the text without any translation notes or quotes.\n\nText: $rawUserMessage';
+        final translationRes = await model.generateContent([Content.text(prompt)]);
+        if (translationRes.text != null && translationRes.text!.trim().isNotEmpty) {
+          displayMessage = translationRes.text!.trim();
+        }
+      } catch (e) {
+        print('Error translating user input: $e');
+      }
+    }
+
+    // Add translated user message
+    setState(() {
+      messages.add({'text': displayMessage, 'isUser': true, 'timestamp': DateTime.now()});
     });
     
     _scrollToBottom();
@@ -666,7 +723,7 @@ class _AIChatbotState extends State<AIChatbot> {
           'You are FarmSphere AI Assistant, a helpful farming expert. '
           'Provide practical advice about agriculture, crop management, plant diseases, soil health, weather, and sustainability. '
           'Be friendly, concise, and actionable. If uncertain, say so and suggest next steps.\n\n'
-          'User question: $userMessage\n\n'
+          'User question: $displayMessage\n\n'
           'FINAL REMINDER: Your response MUST be 100% in $langName ($currentLang). Do NOT use English or any other language. Start your response now:';
       
       // Get response from Gemini
@@ -731,64 +788,153 @@ class _AIChatbotState extends State<AIChatbot> {
         child: SafeArea(
           child: Column(
             children: [
-              // Custom App Bar with gradient
+              // Custom App Bar with gradient and decorative elements
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.9)],
+                    colors: [widget.appBarColor, widget.appBarColor.withOpacity(0.85)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+                      color: widget.appBarColor.withOpacity(0.3),
+                      blurRadius: 16,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 1,
                     ),
                   ],
                 ),
                 child: Row(
                   children: [
                     IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
                     Expanded(
                       child: Row(
                         children: [
+                          // Animated bot avatar
                           Container(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(color: Colors.white.withOpacity(0.15)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
                             child: const Icon(
-                              Icons.smart_toy,
+                              Icons.smart_toy_rounded,
                               color: Colors.white,
                               size: 24,
                             ),
                           ),
                           const SizedBox(width: 12),
-                          Text(
-          widget.title,
-          style: widget.titleStyle ?? const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.title,
+                                  style: widget.titleStyle ?? const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 7,
+                                      height: 7,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF4CAF50),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFF4CAF50).withOpacity(0.5),
+                                            blurRadius: 4,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      'Online · Ready to help',
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(0.7),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
-          ),
-        ),
+                      ),
+                    ),
                   ],
                 ),
-      ),
+              ),
               
-              // Messages area with glass effect
+              // Messages area
           Expanded(
-            child: ListView.builder(
+            child: messages.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                widget.appBarColor.withOpacity(0.15),
+                                widget.appBarColor.withOpacity(0.08),
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.smart_toy_rounded,
+                            size: 40,
+                            color: widget.appBarColor.withOpacity(0.5),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'How can I help you today?',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Ask me anything about farming!',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
                   controller: _scrollController,
               padding: const EdgeInsets.all(16),
                   itemCount: messages.length + (_showTypingIndicator ? 1 : 0),
@@ -933,12 +1079,12 @@ class _AIChatbotState extends State<AIChatbot> {
                     enabled: !_isListening,
                   ),
                 ),
-                      const SizedBox(width: 8),
+                       const SizedBox(width: 8),
                 GestureDetector(
                   onTap: _sendMessage,
                   child: Container(
-                          width: 56,
-                          height: 56,
+                          width: 52,
+                          height: 52,
                     decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -946,7 +1092,7 @@ class _AIChatbotState extends State<AIChatbot> {
                                 widget.sendButtonColor.withOpacity(0.8),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
                                 color: widget.sendButtonColor.withOpacity(0.4),
@@ -959,7 +1105,7 @@ class _AIChatbotState extends State<AIChatbot> {
                     child: const Icon(
                             Icons.send_rounded,
                       color: Colors.white,
-                      size: 24,
+                      size: 22,
                     ),
                   ),
                 ),
@@ -990,7 +1136,14 @@ class _AIChatbotState extends State<AIChatbot> {
                   widget.appBarColor.withOpacity(0.7),
                 ],
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                  BoxShadow(
+                    color: widget.appBarColor.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: const Icon(
               Icons.smart_toy_rounded,
@@ -1011,8 +1164,8 @@ class _AIChatbotState extends State<AIChatbot> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 8,
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 12,
                   offset: const Offset(0, 4),
                   spreadRadius: 1,
                 ),
@@ -1029,11 +1182,16 @@ class _AIChatbotState extends State<AIChatbot> {
                       return Opacity(
                         opacity: 0.3 + (0.7 * (i == 1 ? value : i == 0 ? (value - 0.3).clamp(0.0, 1.0) : (value - 0.6).clamp(0.0, 1.0))),
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 2),
-                          width: 8,
-                          height: 8,
+                          margin: const EdgeInsets.symmetric(horizontal: 3),
+                          width: 9,
+                          height: 9,
                           decoration: BoxDecoration(
-                            color: Colors.grey[600],
+                            gradient: LinearGradient(
+                              colors: [
+                                widget.appBarColor,
+                                widget.appBarColor.withOpacity(0.6),
+                              ],
+                            ),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -1089,7 +1247,7 @@ class _AIChatbotState extends State<AIChatbot> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
                                 color: widget.appBarColor.withOpacity(0.3),

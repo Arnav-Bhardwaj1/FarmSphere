@@ -27,7 +27,20 @@ class ApiService {
         Uri.parse('$baseUrl/api/health'),
         headers: {'Content-Type': 'application/json'},
       ).timeout(const Duration(seconds: 5));
-      return response.statusCode == 200;
+      
+      if (response.statusCode == 200) {
+        try {
+          final data = json.decode(response.body);
+          // If database is not connected, treat as unhealthy for data operations
+          if (data['database_connected'] == false) {
+            return false;
+          }
+        } catch (_) {
+          // ignore json decode errors
+        }
+        return true;
+      }
+      return false;
     } catch (e) {
       if (kDebugMode) {
         print('API health check failed: $e');

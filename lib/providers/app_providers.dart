@@ -869,10 +869,93 @@ class CommunityNotifier extends StateNotifier<CommunityState> {
         },
       ];
 
+      // Mock Chat Messages
+      final mockChatMessages = {
+        'chat1': [
+          {
+            'id': 'msg1',
+            'userId': 'user2',
+            'userName': 'Priya Sharma',
+            'content': 'Has anyone started preparing their fields for the next season?',
+            'time': _getTimeAgo(120),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 120)).toIso8601String(),
+          },
+          {
+            'id': 'msg2',
+            'userId': 'user1',
+            'userName': 'Rajesh Kumar',
+            'content': 'Yes, just got my seeds delivered yesterday.',
+            'time': _getTimeAgo(90),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 90)).toIso8601String(),
+          },
+          {
+            'id': 'msg3',
+            'userId': 'user4',
+            'userName': 'Sandeep Singh',
+            'content': 'Anyone tried the new organic fertilizer?',
+            'time': _getTimeAgo(2),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 2)).toIso8601String(),
+          },
+        ],
+        'chat2': [
+          {
+            'id': 'msg4',
+            'userId': 'user5',
+            'userName': 'Anjali Desai',
+            'content': 'What is the best way to get rid of aphids naturally?',
+            'time': _getTimeAgo(120),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 120)).toIso8601String(),
+          },
+          {
+            'id': 'msg5',
+            'userId': 'user6',
+            'userName': 'Vikram Reddy',
+            'content': 'Neem oil mixed with a little mild soap works wonders.',
+            'time': _getTimeAgo(90),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 90)).toIso8601String(),
+          },
+          {
+            'id': 'msg6',
+            'userId': 'user5',
+            'userName': 'Anjali Desai',
+            'content': 'Thanks for the advice on pest control!',
+            'time': _getTimeAgo(60),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 60)).toIso8601String(),
+          },
+        ],
+        'chat3': [
+          {
+            'id': 'msg7',
+            'userId': 'user7',
+            'userName': 'Rohit Verma',
+            'content': 'Any updates on wheat prices at the mandi today?',
+            'time': _getTimeAgo(300),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 300)).toIso8601String(),
+          },
+          {
+            'id': 'msg8',
+            'userId': 'user8',
+            'userName': 'Gaurav Patil',
+            'content': 'They seem stable, around ₹2300 per quintal.',
+            'time': _getTimeAgo(240),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 240)).toIso8601String(),
+          },
+          {
+            'id': 'msg9',
+            'userId': 'user9',
+            'userName': 'Sunita',
+            'content': 'Rice prices are up 15% this week',
+            'time': _getTimeAgo(180),
+            'timestamp': DateTime.now().subtract(const Duration(minutes: 180)).toIso8601String(),
+          },
+        ],
+      };
+
       state = state.copyWith(
         posts: mockPosts,
         chats: mockChats,
         experts: mockExperts,
+        chatMessages: mockChatMessages,
         isLoading: false,
       );
     } catch (e) {
